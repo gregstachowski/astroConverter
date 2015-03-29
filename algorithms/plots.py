@@ -15,6 +15,7 @@ class Point(object):
 
 class Plot(object):
 
+
     def __init__(self, list):
         self.plt = matplotlib.pyplot
         self.x_sequence = list[0]
@@ -30,13 +31,13 @@ class Plot(object):
         #self.plt.plot(self.x_sequence, self.y_sequence, 'bs-')
         self.fig = self.plt.figure()
         self.ax = self.fig.add_subplot(111)
-        self.ax.plot(self.x_sequence, self.y_sequence, "ro")
+        self.ax.plot(self.x_sequence, self.y_sequence, 'bs-') # "ro"
         self.cid = self.fig.canvas.mpl_connect('button_press_event', self.click)
         self.plt.show()
 
     @staticmethod
     def create_live_plot(master):
-        fig = matplotlib.pyplot.figure()
+        fig = matplotlib.pyplot.figure('bs-')
         ax1 = fig.add_subplot(1, 1, 1)
 
         def animate(i):

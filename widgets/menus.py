@@ -1,5 +1,5 @@
 from tkinter import Menu
-
+from common import Info
 
 class HelpMenu(Menu):
 
@@ -13,8 +13,9 @@ class HelpMenu(Menu):
         self.master.add_cascade(label="Help", menu=self)
 
     def create_commands(self):
-        self.add_command(label="Help")
-        self.add_command(label="About")
+        self.add_command(label="Help", command=Info.notimplemented)
+        self.add_command(label="Licence", command=Info.notimplemented)
+        self.add_command(label="About", command=Info.notimplemented)
 
 
 class EditMenu(Menu):

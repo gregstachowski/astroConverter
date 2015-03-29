@@ -88,3 +88,6 @@ def nsvs(text):
     except (IndexError, ValueError):
         pass
     return myformat(a)
+
+def asas(text):
+    pass

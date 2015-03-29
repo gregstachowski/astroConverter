@@ -16,6 +16,13 @@ class Info():
     def askyesno(tit, tex):
         return tkinter.messagebox.askyesno(tit, tex)
 
+    @staticmethod
+    def license():
+        pass
+
+    @staticmethod
+    def license():
+        pass
 
 def loadfile():
     x = tkinter.filedialog.askopenfilename()
