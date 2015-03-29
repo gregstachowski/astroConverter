@@ -13,7 +13,6 @@ class Point(object):
         self.y_sequence = y
 
 
-
 class Plot(object):
 
     def __init__(self, list):
@@ -28,7 +27,6 @@ class Plot(object):
                 print("bum")
 
     def create_plot(self):
-        """it requires list with two other lists inside"""
         #self.plt.plot(self.x_sequence, self.y_sequence, 'bs-')
         self.fig = self.plt.figure()
         self.ax = self.fig.add_subplot(111)
