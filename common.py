@@ -80,6 +80,28 @@ def del_empty(list):
     return list
 
 
+def del_empty_space(list):
+    """deletes empty elements with "space" in it"""
+    for x in range(len(list)):
+        if " " in list[x-1]:
+            del list[x-1]
+    return list
+
+
+def clear_list(list):
+    """ clears "" and " " in list """
+    for x in range(len(list)):
+        try:
+            list.remove("")
+        except ValueError:
+            pass
+        try:
+            list.remove(" ")
+        except ValueError:
+            pass
+    return list
+
+
 def myformat(table):
     m = 0
     for t in table:

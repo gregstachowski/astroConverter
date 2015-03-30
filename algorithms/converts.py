@@ -1,5 +1,5 @@
 from tkinter import Tk, Button, TOP
-from common import myformat
+from common import myformat, clear_list
 
 
 class Convert(object):
@@ -11,27 +11,27 @@ class Convert(object):
         self.root.title("Convert")
         self.root.geometry("150x150")
         self.B1, self.B2, self.B3, self.B4 = None, None, None, None
-        self.create()
+        self._create()
 
-    def create(self):
-        self.B1 = Button(self.root, text="From hipparcos", command=self.do_bhip)
+    def _create(self):
+        self.B1 = Button(self.root, text="From hipparcos", command=self._do_bhip)
         self.B1.pack(side=TOP)
-        self.B2 = Button(self.root, text="From Integral", command=self.do_bint)
+        self.B2 = Button(self.root, text="From Integral", command=self._do_bint)
         self.B2.pack(side=TOP)
-        self.B3 = Button(self.root, text="From nsvs", command=self.do_bnsvs)
+        self.B3 = Button(self.root, text="From nsvs", command=self._do_bnsvs)
         self.B3.pack(side=TOP)
 
-    def do_bhip(self):
+    def _do_bhip(self):
         self.textField.clear()
         self.textField.insert_text(hipparcos(self.txt))
         self.root.destroy()
 
-    def do_bint(self):
+    def _do_bint(self):
         self.textField.clear()
         self.textField.insert_text(integral(self.txt))
         self.root.destroy()
 
-    def do_bnsvs(self):
+    def _do_bnsvs(self):
         self.textField.clear()
         self.textField.insert_text(nsvs(self.txt))
         self.root.destroy()
@@ -60,12 +60,15 @@ def integral(text):
     text = text.split("\n")
     for x in range(len(text)):
         text[x] = text[x].split(" ")
+    for el in text:
+        el = clear_list(el)
+    print(text)
     try:
         for line in text:
             x = []
             s = float(line[0])
             x.append(str(s + CONST))
-            x.append(str(round(float(line[1]),3)))
+            x.append(str(round(float(line[1]), 3)))
             a.append(x)
     except (IndexError, ValueError):
         pass
@@ -89,5 +92,6 @@ def nsvs(text):
         pass
     return myformat(a)
 
+
 def asas(text):
-    pass
+    print(text)
