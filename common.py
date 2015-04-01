@@ -1,5 +1,4 @@
 import tkinter.messagebox, tkinter.filedialog
-import astropy.io.fits as fits
 
 
 class Info():
@@ -11,15 +10,11 @@ class Info():
 
     @staticmethod
     def about():
-        tkinter.messagebox.showinfo("About", __info__)
+        tkinter.messagebox.showinfo("About", "About")
 
     @staticmethod
     def askyesno(tit, tex):
         return tkinter.messagebox.askyesno(tit, tex)
-
-    @staticmethod
-    def license():
-        pass
 
     @staticmethod
     def license():
@@ -139,6 +134,4 @@ def myformat(table):
     return s
 
 if __name__ == "__main__":
-    x = [["#sa"], ["d", "u", "p", "a"], ["s", "#"]]
-    x = del_with(x)
-    print(x)
+    pass
