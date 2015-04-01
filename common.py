@@ -28,14 +28,28 @@ class Info():
 
 def loadfile():
     """loads file. Has build-in file format recognize system
-    returns text"""
+    returns tuple(directory, text)"""
     x = tkinter.filedialog.askopenfilename()
     if not x:
         return
-    x = open(x)
-    y = x.read()
-    x.close()
-    return y
+    file = open(x)
+    y = file.read()
+    file.close()
+    s = (x, y)
+    return s
+
+
+def quicksavefile(directory, text, format=".out"):
+    """saves file in given directory in fiven format"""
+    print(text)
+    print(directory)
+    directory = directory.split(".")
+    del directory[-1]
+    directory.append(format)
+    s = "".join(directory)
+    file = open(s, "w")
+    file.write(text)
+    file.close()
 
 
 def savefile(text):
