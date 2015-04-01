@@ -11,4 +11,5 @@ A project to convert few most common astronomy format data used in photometry. P
 3. Run `python astroConverter.py`
 
 # Troubleshooting
+* In case of problems with running `python astroConverter.py`, instead of 'python' try using full path to your installation. For example: `c:\python34\python.exe astroConverter.py`
 * In case of problems with installing dependencies try using command `pip3.4 install -r requirements.txt`. This problem may occur if you have installed multiple versions of python.
