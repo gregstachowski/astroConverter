@@ -34,7 +34,7 @@ class EditMenu(Menu):
     def _create_commands(self):
         self.add_command(label="Convert", command=self.textField.convert)
         self.add_command(label="Clear", command=self.textField.clear)
-        self.add_command(label="Options")
+        self.add_command(label="Options", command=Info.notimplemented)
 
 
 class FileMenu(Menu):
