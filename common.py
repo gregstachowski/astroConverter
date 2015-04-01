@@ -130,7 +130,10 @@ def myformat(table):
     fstr = "{0:"+str(m)+"}{1:"+str(m)+"}"
     s = ""
     for x in table:
-        s += fstr.format(x[0], x[1]) + "\n"
+        try:
+            s += fstr.format(x[0], x[1]) + "\n"
+        except IndexError:
+            pass
     return s
 
 if __name__ == "__main__":

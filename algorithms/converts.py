@@ -10,7 +10,7 @@ class Convert(object):
         self.root = Tk()
         self.root.title("Convert")
         self.root.geometry("150x150")
-        self.B1, self.B2, self.B3, self.B4 = None, None, None, None
+        self.B1, self.B2, self.B3, self.B4, self.B5 = None, None, None, None, None
         self._create()
 
     def _create(self):
@@ -22,6 +22,8 @@ class Convert(object):
         self.B3.pack(side=TOP)
         self.B4 = Button(self.root, text="From asas", command=self._do_asas)
         self.B4.pack(side=TOP)
+        self.B5 = Button(self.root, text="From munipac", command=self._do_munipac)
+        self.B5.pack(side=TOP)
 
     def _do_bhip(self):
         self.textField.clear()
@@ -41,6 +43,11 @@ class Convert(object):
     def _do_asas(self):
         self.textField.clear()
         self.textField.insert_text(asas(self.txt))
+        self.root.destroy()
+        
+    def _do_munipac(self):
+        self.textField.clear()
+        self.textField.insert_text(munipac(self.txt))
         self.root.destroy()
 
 
@@ -121,3 +128,25 @@ def asas(text):
         except IndexError:
             pass
     return myformat(out)
+
+
+def munipac(text):
+    TO_DEL = ("9.9999", "99.9999")
+    text = text.split("\n")
+    for x in range(len(text)):
+        text[x-1] = text[x-1].split(" ")
+    del text[0]
+    del text[0]
+    for y in range(len(text)):
+        try:
+            for x in range(len(text[y-1])):
+                if text[y-1][x-1] in TO_DEL:
+                    del text[y-1]
+                    break
+        except IndexError:
+            pass
+    for el in text:
+        while len(el) > 2:
+            del el[2]
+    return myformat(clear_list(text))
+    

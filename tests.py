@@ -1,4 +1,4 @@
-from algorithms.converts import asas, integral, nsvs, hipparcos
+from algorithms.converts import asas, integral, nsvs, hipparcos, munipac
 
 
 def test_asas_converting():
@@ -19,6 +19,11 @@ def test_nsvs_converting():
 def test_hipparcos_converting():
     file = open("mats/hipparcos.txt").read()
     print(hipparcos(file))
+    
+    
+def test_munipac_converting():
+    file = open("mats/munipack.txt").read()
+    print(munipac(file))
 
 
 def converting_tests():
@@ -28,4 +33,4 @@ def converting_tests():
     test_hipparcos_converting()
 
 if __name__ == "__main__":
-    pass
+    test_munipac_converting()
