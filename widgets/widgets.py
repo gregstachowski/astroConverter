@@ -23,10 +23,10 @@ class Toolbar(Frame):
         Frame.__init__(self, master)
         self.b1, self.b2, self.b3 = None, None, None
         self.b4, self.b5 = None, None
-        self.create_buttons()
+        self._create_buttons()
         self.pack(side=TOP, fill=X)
 
-    def create_buttons(self):
+    def _create_buttons(self):
         self.b1 = Button(self, text="Open File", command=self.textField.load)
         self.b1.pack(side=LEFT)
         self.b2 = Button(self, text="Save file", command=self.textField.save)
@@ -44,10 +44,10 @@ class TextField(Text):
     def __init__(self, master):
         self.master = master
         Text.__init__(self, master, width=50, height=30, wrap=NONE)
-        self.create()
+        self._create()
         self.pack(side=BOTTOM, fill=BOTH, expand=YES)
 
-    def create(self):
+    def _create(self):
         ys = Scrollbar(self.master, orient=VERTICAL, command=self.yview)
         xs = Scrollbar(self.master, orient=HORIZONTAL, command=self.xview)
         ys.pack(side=RIGHT, fill=Y)

@@ -4,17 +4,16 @@ import settings
 
 
 class MrRoot(Tk):
-
-    others = []
+    """Main window"""
 
     def __init__(self):
         Tk.__init__(self)
         self.mainMenu = Menu(self)
         self.config(menu=self.mainMenu)
         self.textField = None
-        self.create_widgets()
+        self._create_widgets()
 
-    def create_widgets(self):
+    def _create_widgets(self):
         self.textField = TextField(self)
         MainMenu(self.mainMenu, self, self.textField)
         Toolbar(self, self.textField)
@@ -26,4 +25,3 @@ class MrRoot(Tk):
 
 if __name__ == "__main__":
     MrRoot()
-    print(MrRoot.root)

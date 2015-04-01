@@ -3,6 +3,7 @@ import astropy.io.fits as fits
 
 
 class Info():
+    """Info-class for pop-up messages"""
 
     @staticmethod
     def notimplemented():
@@ -24,7 +25,10 @@ class Info():
     def license():
         pass
 
+
 def loadfile():
+    """loads file. Has build-in file format recognize system
+    returns text"""
     x = tkinter.filedialog.askopenfilename()
     if not x:
         return
@@ -32,13 +36,10 @@ def loadfile():
     y = x.read()
     x.close()
     return y
-    """
-    x = fits.open(x)
-    print(x.info())
-    return"""
 
 
 def savefile(text):
+    """opens tkinter filedialog to save file"""
     file = tkinter.filedialog.asksaveasfile(mode='w', defaultextension='.txt')
     if not file:
         return
@@ -102,7 +103,16 @@ def clear_list(list):
     return list
 
 
+def get_without(list, char="#"):
+    """returns list with elements without char"""
+    s = []
+    for line in list:
+        if char not in line:
+            s.append(line)
+    return s
+
 def myformat(table):
+    """creates str from table and formats it"""
     m = 0
     for t in table:
         if len(t[0]) > m:
@@ -113,3 +123,8 @@ def myformat(table):
     for x in table:
         s += fstr.format(x[0], x[1]) + "\n"
     return s
+
+if __name__ == "__main__":
+    x = [["#sa"], ["d", "u", "p", "a"], ["s", "#"]]
+    x = del_with(x)
+    print(x)
