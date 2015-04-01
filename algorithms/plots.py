@@ -6,6 +6,7 @@ from common import text_to_list
 
 
 class Point(object):
+    """has to be rewritten"""
 
     def __init__(self, x, y):
         self.plt = matplotlib.pyplot
@@ -14,7 +15,7 @@ class Point(object):
 
 
 class Plot(object):
-
+    """has to be rewritten"""
 
     def __init__(self, list):
         self.plt = matplotlib.pyplot

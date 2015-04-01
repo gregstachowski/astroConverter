@@ -1,5 +1,5 @@
 from tkinter import Tk, Button, TOP
-from common import myformat, clear_list
+from common import myformat, clear_list, get_without, del_empty
 
 
 class Convert(object):
@@ -20,6 +20,8 @@ class Convert(object):
         self.B2.pack(side=TOP)
         self.B3 = Button(self.root, text="From nsvs", command=self._do_bnsvs)
         self.B3.pack(side=TOP)
+        self.B4 = Button(self.root, text="From asas", command=self._do_asas)
+        self.B4.pack(side=TOP)
 
     def _do_bhip(self):
         self.textField.clear()
@@ -35,6 +37,12 @@ class Convert(object):
         self.textField.clear()
         self.textField.insert_text(nsvs(self.txt))
         self.root.destroy()
+
+    def _do_asas(self):
+        self.textField.clear()
+        self.textField.insert_text(asas(self.txt))
+        self.root.destroy()
+
 
 def hipparcos(text):
     CONST = 2440000
@@ -62,7 +70,6 @@ def integral(text):
         text[x] = text[x].split(" ")
     for el in text:
         el = clear_list(el)
-    print(text)
     try:
         for line in text:
             x = []
@@ -94,4 +101,23 @@ def nsvs(text):
 
 
 def asas(text):
-    print(text)
+    s = get_without(text.split("\n"))
+    for x in range(len(s)):
+        s[x-1] = s[x-1].split(" ")
+    for el in s:
+        el = clear_list(el)
+    p = s
+    out = []
+    for s in p:
+        try:
+            p2 = {
+                s[6]: s[1],
+                s[7]: s[2],
+                s[8]: s[3],
+                s[9]: s[4],
+                s[10]: s[5],
+            }
+            out.append((s[0], p2[min(p2.keys())]))
+        except IndexError:
+            pass
+    return myformat(out)
