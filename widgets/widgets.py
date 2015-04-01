@@ -36,15 +36,13 @@ class Toolbar(Frame):
         self.b3.pack(side=LEFT)
         self.b4 = Button(self, text="Simple Plot", command=self.textField.plot)
         self.b4.pack(side=LEFT)
-        self.b5 = Button(self, text="Live Plot", command=self.textField.liveplot)
-        self.b5.pack(side=LEFT)
 
 
 class TextField(Text):
 
     def __init__(self, master):
         self.master = master
-        Text.__init__(self, master, width=50, height=30, wrap=NONE)
+        Text.__init__(self, self.master, width=50, height=30, wrap=NONE)
         self._create()
         self.directory = None
         self.pack(side=BOTTOM, fill=BOTH, expand=YES)
@@ -86,10 +84,7 @@ class TextField(Text):
         quicksavefile(self.directory, self.get_text())
 
     def convert(self):
-        Convert(self)
+        Convert(self, self.master)
 
     def plot(self):
-        Plot(text_to_list(self.get_text())).create_plot()
-
-    def liveplot(self):
-        Plot.create_live_plot(self)
+        Plot(text_to_list(self.get_text()), self.master).create_plot()

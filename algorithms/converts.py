@@ -1,55 +1,61 @@
 from tkinter import Tk, Button, TOP
-from common import myformat, clear_list, get_without, del_empty
+from common import myformat, clear_list, get_without
 
 
-class Convert(object):
+class Convert(Tk):
 
-    def __init__(self, textfield):
+    def __init__(self, textfield, master):
+        Tk.__init__(self)
+        self.master = master
         self.textField = textfield
         self.txt = self.textField.get_text()
-        self.root = Tk()
-        self.root.title("Convert")
-        self.root.geometry("150x150")
+        self.title("Convert")
+        self.geometry("150x150")
+        self.master.windows.append(self)
         self.B1, self.B2, self.B3, self.B4, self.B5 = None, None, None, None, None
         self._create()
 
     def _create(self):
-        self.B1 = Button(self.root, text="From hipparcos", command=self._do_bhip)
+        self.B1 = Button(self, text="From hipparcos", command=self._do_bhip)
         self.B1.pack(side=TOP)
-        self.B2 = Button(self.root, text="From Integral", command=self._do_bint)
+        self.B2 = Button(self, text="From Integral", command=self._do_bint)
         self.B2.pack(side=TOP)
-        self.B3 = Button(self.root, text="From nsvs", command=self._do_bnsvs)
+        self.B3 = Button(self, text="From nsvs", command=self._do_bnsvs)
         self.B3.pack(side=TOP)
-        self.B4 = Button(self.root, text="From asas", command=self._do_asas)
+        self.B4 = Button(self, text="From asas", command=self._do_asas)
         self.B4.pack(side=TOP)
-        self.B5 = Button(self.root, text="From munipac", command=self._do_munipac)
+        self.B5 = Button(self, text="From munipac", command=self._do_munipac)
         self.B5.pack(side=TOP)
 
     def _do_bhip(self):
         self.textField.clear()
         self.textField.insert_text(hipparcos(self.txt))
-        self.root.destroy()
+        self.destroy()
 
     def _do_bint(self):
         self.textField.clear()
         self.textField.insert_text(integral(self.txt))
-        self.root.destroy()
+        self.destroy()
 
     def _do_bnsvs(self):
         self.textField.clear()
         self.textField.insert_text(nsvs(self.txt))
-        self.root.destroy()
+        self.destroy()
 
     def _do_asas(self):
         self.textField.clear()
         self.textField.insert_text(asas(self.txt))
-        self.root.destroy()
+        self.destroy()
         
     def _do_munipac(self):
         self.textField.clear()
         self.textField.insert_text(munipac(self.txt))
-        self.root.destroy()
-
+        self.destroy()
+        
+    def close(self):
+        self.master.windows.remove(self)
+        self.destroy()
+        
 
 def hipparcos(text):
     CONST = 2440000

@@ -8,6 +8,7 @@ class MrRoot(Tk):
 
     def __init__(self):
         Tk.__init__(self)
+        self.windows = []
         self.mainMenu = Menu(self)
         self.config(menu=self.mainMenu)
         self.textField = None
@@ -21,7 +22,19 @@ class MrRoot(Tk):
     def configure(self):
         self.title(settings.title + settings.version)
         self.geometry(settings.size)
-
+        
+    def destroy(self):
+        #print(self.windows)
+        while len(self.windows) > 0:
+            try:
+                for window in self.windows:
+                    window.destroy()
+                    self.windows.remove(window)
+            except AttributeError:
+                print("AttributeError in destroy mainwindow")
+        #print(self.windows)
+        Tk.destroy(self)
+        
 
 if __name__ == "__main__":
     MrRoot()
