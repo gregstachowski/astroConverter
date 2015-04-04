@@ -52,10 +52,6 @@ class Convert(Tk):
         self.textField.insert_text(munipac(self.txt))
         self.destroy()
         
-    def close(self):
-        self.master.windows.remove(self)
-        self.destroy()
-        
 
 def hipparcos(text):
     CONST = 2440000

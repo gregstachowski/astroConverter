@@ -1,6 +1,7 @@
 from tkinter import Tk, Menu
 from widgets.widgets import MainMenu, Toolbar, TextField
 import settings
+from _tkinter import TclError
 
 
 class MrRoot(Tk):
@@ -24,15 +25,16 @@ class MrRoot(Tk):
         self.geometry(settings.size)
         
     def destroy(self):
-        #print(self.windows)
-        while len(self.windows) > 0:
+        to_destroy = []
+        for x in range(len(self.windows)):
             try:
-                for window in self.windows:
-                    window.destroy()
-                    self.windows.remove(window)
-            except AttributeError:
-                print("AttributeError in destroy mainwindow")
-        #print(self.windows)
+                self.windows[x-1].destroy()
+                to_destroy.append(self.windows[x-1])
+            except TclError:
+                to_destroy.append(self.windows[x-1])
+        for x in to_destroy:
+            self.windows.remove(x)
+        print(self.windows)
         Tk.destroy(self)
         
 
