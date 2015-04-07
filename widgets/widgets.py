@@ -87,4 +87,4 @@ class TextField(Text):
         Convert(self, self.master)
 
     def plot(self):
-        Plot(text_to_list(self.get_text()), self.master).create_plot()
+        Plot(text_to_list(self.get_text()), self.master)

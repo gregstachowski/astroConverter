@@ -1,71 +1,39 @@
-import matplotlib.pyplot
-import matplotlib.animation
-import matplotlib.lines
-import matplotlib.pyplot
-from matplotlib.widgets import LassoSelector
-from common import text_to_list
-from _tkinter import TclError
-from ctypes.test.test_random_things import callback_func
+import matplotlib.pyplot as plt
 
 
 class Point(object):
-    """has to be rewritten"""
 
     def __init__(self, x, y):
-        self.plt = matplotlib.pyplot
-        self.x_sequence = x
-        self.y_sequence = y
-
+        self.x = x
+        self.y = y
+        self.color = 'b'
+        
+    def __str__(self):
+        return str(self.x) + " - " + str(self.y)
+    
 
 class Plot(object):
-    """has to be rewritten"""
+    """
+    *******************
+    HAS TO BE REWRITTEN
+    *******************
+    """
 
     def __init__(self, list, master):
         self.master = master
-        self.plt = matplotlib.pyplot
-        self.x_sequence = list[0]
-        self.y_sequence = list[1]
-
-    def click(self, event):
-        try:
-            s = round(event.xdata,3)
-            for x in self.x_sequence:
-                if round(float(x),3) == s:
-                    print("bum")
-        except:
-            pass
-
-    def create_plot(self):
-        def x(verts):
-            print(verts)
-        #self.plt.plot(self.x_sequence, self.y_sequence, 'bs-')
-        self.fig = self.plt.figure()
-        self.ax = self.fig.add_subplot(111)
-        self.ax.plot(self.x_sequence, self.y_sequence, 'o') # "ro"
-        self.lasso = LassoSelector(self.ax, x)
-        self.cid = self.fig.canvas.mpl_connect('button_press_event', self.click)
-        self.master.windows.append(self)
-        self.plt.show()
+        self.points = []
+        self.create_points(list)
+        self.create_graph()
+    
+    def create_points(self, list):
+        for x in range(len(list[0])):
+            x_cord = list[0][x-1]
+            y_cord = list[1][x-1]
+            self.points.append(Point(x_cord, y_cord))
+            
+    def create_graph(self):
+        for p in self.points:
+            plt.plot(p.x, p.y, 'o', color=p.color)
+        plt.show()
         
-    def destroy(self):
-        try:
-            self.plt.close()
-        except (AttributeError, TclError):
-            pass
-
-    @staticmethod
-    def create_live_plot(master):
-        fig = matplotlib.pyplot.figure('bs-')
-        ax1 = fig.add_subplot(1, 1, 1)
-
-        def animate(i):
-            ax1.cla()
-            text = master.get_text()
-            l = text_to_list(text)
-            try:
-                ax1.plot(l[0], l[1])
-            except ValueError:
-                pass
-
-        matplotlib.animation.FuncAnimation(fig, animate, interval=1000)
-        matplotlib.pyplot.show()
+        
