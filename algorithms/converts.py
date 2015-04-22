@@ -110,6 +110,7 @@ def nsvs(text):
 
 
 def asas(text):
+    CONST = 2450000
     s = get_without(text.split("\n"))
     for x in range(len(s)):
         s[x-1] = s[x-1].split(" ")
@@ -126,7 +127,11 @@ def asas(text):
                 s[9]: s[4],
                 s[10]: s[5],
             }
-            out.append((s[0], p2[min(p2.keys())]))
+            #creating float because we need sum, and can't use int()
+            x = float(s[0])+CONST
+            #converting float to string, because we need string for myformat()
+            x = str(x)
+            out.append((x, p2[min(p2.keys())]))
         except IndexError:
             pass
     return myformat(out)
