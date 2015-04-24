@@ -125,7 +125,7 @@ class Select_handler(RectangleSelector):
         l = len(unsel[0])
         out = []
         for iter in range(l):
-            out.append([unsel[0][iter], unsel[0][iter]])
+            out.append([unsel[0][iter], unsel[1][iter]])
         #updating text_field
         Plot.plot.master.clear()
         Plot.plot.master.insert_text(myformat(out))
