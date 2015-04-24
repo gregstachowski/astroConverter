@@ -3,6 +3,7 @@ from matplotlib.widgets import Button, RectangleSelector
 from time import time, sleep
 from algorithms.tests import perftest
 from common import myformat
+from settings import Points
 
 # TODO:
 # point finder \/
@@ -10,14 +11,12 @@ from common import myformat
 # delete points \/
 # clear point selection (in case of errors) \/
 # update text_field (COULD BE TRICKY!) \/
-# make use of Points.base_config. Best if everything will be in settings.py
-
-class Points:
-    base_config = {}
+# make use of Points.base_config. Best if everything will be in settings.py \/
+# names, text etc in graphs \/
 
 class Plot(object):
     
-    plot = None # Remember to update reference. It may be important!
+    plot = None
 
     def __init__(self, list, master):
         #print(list)
@@ -32,13 +31,19 @@ class Plot(object):
         plt.axes(self.ax)
         #print("Unselected: ", end="")
         #print(self.unselected_points)
-        self.ax.plot(self.unselected_points[0], self.unselected_points[1],'o', color='b')
+        self.ax.plot(self.unselected_points[0], self.unselected_points[1],
+                     Points.base_config['unselected_point_line_type'], 
+                     color=Points.base_config['unselected_point_color'],
+                     )
         
     def draw_selected_points(self):
         plt.axes(self.ax)
         #print("Selected: ", end="")
         #print(self.selected_points)
-        self.ax.plot(self.selected_points[0], self.selected_points[1], 'o', color='r')
+        self.ax.plot(self.selected_points[0], self.selected_points[1],
+                    Points.base_config['selected_point_line_type'],
+                    color=Points.base_config['selected_point_color'],
+                    )
     
     def create_initial_graph(self):
         self.ax = plt.subplot(111)
