@@ -2,12 +2,14 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Button, RectangleSelector
 from time import time, sleep
 from algorithms.tests import perftest
+from common import myformat
+
 # TODO:
 # point finder \/
 # change color of chosen point \/
 # delete points \/
 # clear point selection (in case of errors) \/
-# update text_field (COULD BE TRICKY!) 
+# update text_field (COULD BE TRICKY!) \/
 # make use of Points.base_config. Best if everything will be in settings.py
 
 class Points:
@@ -30,7 +32,7 @@ class Plot(object):
         plt.axes(self.ax)
         #print("Unselected: ", end="")
         #print(self.unselected_points)
-        self.ax.plot(self.unselected_points[0], self.unselected_points[1], 'o', color='b')
+        self.ax.plot(self.unselected_points[0], self.unselected_points[1],'o', color='b')
         
     def draw_selected_points(self):
         plt.axes(self.ax)
@@ -112,6 +114,17 @@ class Select_handler(RectangleSelector):
         
     @staticmethod
     def del_selected(event):
+        if len(Plot.plot.selected_points[0]) == 0: return
+        #making preperations for updating text field
+        unsel = Plot.plot.unselected_points
+        l = len(unsel[0])
+        out = []
+        for iter in range(l):
+            out.append([unsel[0][iter], unsel[0][iter]])
+        #updating text_field
+        Plot.plot.master.clear()
+        Plot.plot.master.insert_text(myformat(out))
+        #deleting points
         Plot.plot.selected_points = [[],[]]
         Plot.plot.redraw()
         
