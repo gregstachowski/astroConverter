@@ -13,13 +13,16 @@ from settings import Points
 # update text_field (COULD BE TRICKY!) \/
 # make use of Points.base_config. Best if everything will be in settings.py \/
 # names, text etc in graphs \/
+# add names for axes \/
+
+# BUGS:
+# axes titles are dissapearing after selecting points. Add updates...
 
 class Plot(object):
     
     plot = None
 
     def __init__(self, list, master):
-        #print(list)
         self.list = list
         Plot.plot = self
         self.master = master #it's needed for updating text_field #THINKOVER! MAYBE IT'S NOT NEEDED
@@ -29,8 +32,6 @@ class Plot(object):
         
     def draw_unselected_points(self):
         plt.axes(self.ax)
-        #print("Unselected: ", end="")
-        #print(self.unselected_points)
         self.ax.plot(self.unselected_points[0], self.unselected_points[1],
                      Points.base_config['unselected_point_line_type'], 
                      color=Points.base_config['unselected_point_color'],
@@ -38,18 +39,19 @@ class Plot(object):
         
     def draw_selected_points(self):
         plt.axes(self.ax)
-        #print("Selected: ", end="")
-        #print(self.selected_points)
         self.ax.plot(self.selected_points[0], self.selected_points[1],
                     Points.base_config['selected_point_line_type'],
                     color=Points.base_config['selected_point_color'],
                     )
-    
+        
+    def set_labels(self):
+        self.ax.set_xlabel(Points.base_config['x_label'])
+        self.ax.set_ylabel(Points.base_config['y_label'])
+
+
     def create_initial_graph(self):
         self.ax = plt.subplot(111)
-        #for line in self.ax.axes.get_lines():
-        #    print(dir(line))
-        #    print(line.get_xdata())
+        self.set_labels()
         self.draw_unselected_points()
         plt.subplots_adjust(bottom=0.2)
         axdel = plt.axes([0.7, 0.05, 0.1, 0.075])
@@ -67,9 +69,6 @@ class Plot(object):
     def redraw(self):
         plt.axes(self.ax)
         plt.cla()
-        #for p in self.points:
-        #    plt.plot(p.x, p.y, 'o', color=p.color)
-        #unselected_points = self.get_unselected_points()
         self.draw_selected_points()
         self.draw_unselected_points()
         plt.draw()
@@ -82,7 +81,6 @@ class Select_handler(RectangleSelector):
      
     @perftest   
     def onselect(self, eclick, erelease):
-        #print("testujemy: ", end="")
         def is_in_range(xdata, ydata):
             x = float(xdata)
             y = float(ydata)
@@ -93,7 +91,6 @@ class Select_handler(RectangleSelector):
         sel = Plot.plot.selected_points
         all_unsel_len = len(unsel[0])
         to_del = []
-        #print (all_unsel_len)
         for iter in range(all_unsel_len):
             xcord = unsel[0][iter]
             ycord = unsel[1][iter]

@@ -1,6 +1,9 @@
 from tkinter import Tk, Button, TOP
 from common import myformat, clear_list, get_without
 
+# TODO
+# Add custom converts. User have to specify which columns he wants to convert and CONST to add.
+
 
 class Convert(Tk):
 
