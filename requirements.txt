@@ -1,5 +1,4 @@
 astropy==1.0.1
-cx-Freeze==4.3.4
 matplotlib==1.4.3
 numpy==1.9.2
 pyparsing==2.0.3
