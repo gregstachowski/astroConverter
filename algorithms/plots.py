@@ -54,6 +54,8 @@ class Plot(object):
         self.set_labels()
         self.draw_unselected_points()
         plt.subplots_adjust(bottom=0.2)
+        ax = plt.gca()
+        ax.invert_yaxis()
         axdel = plt.axes([0.7, 0.05, 0.1, 0.075])
         axselect = plt.axes([0.81, 0.05, 0.1, 0.075])
         axclear_select = plt.axes([0.59, 0.05, 0.1, 0.075])
