@@ -1,4 +1,6 @@
 import tkinter.messagebox, tkinter.filedialog
+from astropy.io import fits
+import numpy
 
 
 class Info():
@@ -27,11 +29,24 @@ def loadfile():
     x = tkinter.filedialog.askopenfilename()
     if not x:
         return
-    file = open(x)
-    y = file.read()
-    file.close()
-    s = (x, y)
-    return s
+    y = x.split(".")
+    if y[-1] == "fits":
+        # TODO: this is extremely stupid and dummy. Create new function for converting
+        # add proper formating etc
+        hdulist = fits.open(x)
+        tbdata = hdulist[1].data
+        a = tbdata.field('TMID')
+        b = tbdata.field('TAMFLUX2')
+        out = ""
+        for i in range(len(a)):
+            out += str(a[i]) + " "*5 + str(b[i]) + "\n"
+        return (x, out)
+    else:
+        file = open(x)
+        y = file.read()
+        file.close()
+        s = (x, y)
+        return s
 
 
 def quicksavefile(directory, text, format=".out"):

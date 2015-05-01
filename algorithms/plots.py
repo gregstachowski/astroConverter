@@ -50,22 +50,40 @@ class Plot(object):
 
 
     def create_initial_graph(self):
+        self.fig = plt.Figure()
         self.ax = plt.subplot(111)
-        self.set_labels()
+        #self.set_labels()
         self.draw_unselected_points()
         plt.subplots_adjust(bottom=0.2)
         ax = plt.gca()
         ax.invert_yaxis()
-        axdel = plt.axes([0.7, 0.05, 0.1, 0.075])
-        axselect = plt.axes([0.81, 0.05, 0.1, 0.075])
-        axclear_select = plt.axes([0.59, 0.05, 0.1, 0.075])
+        axdel = plt.axes([0.7, 0.04, 0.1, 0.075])
+        axselect = plt.axes([0.81, 0.04, 0.1, 0.075])
+        axclear_select = plt.axes([0.59, 0.04, 0.1, 0.075])
         bclr_select = Button(axclear_select, 'Clear \nselection')
         bclr_select.on_clicked(Select_handler.clear_selection)
         bselect = Button(axselect, 'Select')
         bselect.on_clicked(Select_handler)
         bdel = Button(axdel, 'Delete')
         bdel.on_clicked(Select_handler.del_selected)
+        axsave = plt.axes([0.48, 0.04, 0.1, 0.075])
+        bsave = Button(axsave, 'Save')
+        bsave.on_clicked(self.saveme)
         plt.show()
+        
+    def saveme(self, event):
+        directory = self.master.directory
+        directory = directory.split("/")
+        name = directory[-1]
+        name = name.split(".")
+        del name[-1]
+        name.append(".jpg")
+        name = "".join(name)
+        del directory[-1]
+        directory.append(name)
+        directory = "/".join(directory)
+        extent = self.ax.get_window_extent().transformed(self.fig.dpi_scale_trans.inverted())
+        plt.savefig(directory, bbox_inches=extent.expanded(1.3, 1.2))
 
     @perftest
     def redraw(self):
