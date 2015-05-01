@@ -77,7 +77,7 @@ class Plot(object):
         name = directory[-1]
         name = name.split(".")
         del name[-1]
-        name.append(".jpg")
+        name.append(".png")
         name = "".join(name)
         del directory[-1]
         directory.append(name)
