@@ -2,27 +2,28 @@ from widgets.menus import FileMenu, EditMenu, HelpMenu
 from tkinter import Frame, Button, TOP, RIGHT, BOTTOM, X, Y, LEFT
 from tkinter import Text, NONE, BOTH, YES, END
 from tkinter import Scrollbar, VERTICAL, HORIZONTAL
-from common import Info, loadfile, savefile, text_to_list, quicksavefile
+from common import Info, loadfile, savefile, text_to_list, quicksavefile, cut_data
 from algorithms.converts import Convert
 from algorithms.plots import Plot
+from algorithms.variability import VariabilityTest
 
 
 class MainMenu(object):
 
-    def __init__(self, master, root, textfield):
+    def __init__(self, data, root, textfield):
         self.textField = textfield
-        self.fileMenu = FileMenu(master, root, self.textField)
-        self.editMenu = EditMenu(master, self.textField)
-        self.helpMenu = HelpMenu(master)
+        self.fileMenu = FileMenu(data, root, self.textField)
+        self.editMenu = EditMenu(data, self.textField)
+        self.helpMenu = HelpMenu(data)
 
 
 class Toolbar(Frame):
 
-    def __init__(self, master, textfield):
+    def __init__(self, data, textfield):
         self.textField = textfield
-        Frame.__init__(self, master)
+        Frame.__init__(self, data)
         self.b1, self.b2, self.b3 = None, None, None
-        self.b4, self.b5 = None, None
+        self.b4, self.b5, self.b6 = None, None, None
         self._create_buttons()
         self.pack(side=TOP, fill=X)
 
@@ -36,12 +37,14 @@ class Toolbar(Frame):
         self.b3.pack(side=LEFT)
         self.b4 = Button(self, text="Simple Plot", command=self.textField.plot)
         self.b4.pack(side=LEFT)
+        self.b5 = Button(self, text="VariabilityTest", command=self.textField.variability)
+        self.b5.pack(side=LEFT)
 
 
 class TextField(Text):
 
-    def __init__(self, master):
-        self.master = master
+    def __init__(self, data):
+        self.master = data
         Text.__init__(self, self.master, width=50, height=30, wrap=NONE)
         self._create()
         self.directory = None
@@ -88,3 +91,9 @@ class TextField(Text):
 
     def plot(self):
         Plot(text_to_list(self.get_text()), self)
+    
+    def variability(self):
+        data = cut_data(self.get_text())
+        varability = VariabilityTest(data[0], data[1], deviation_weight = 1, percentage_condition=0)
+        test = varability.calculate()
+        Info.message("VariabilityTest", "Variability: %s" % test)

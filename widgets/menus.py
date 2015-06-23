@@ -4,8 +4,8 @@ from common import Info
 
 class HelpMenu(Menu):
 
-    def __init__(self, master):
-        self.master = master
+    def __init__(self, data):
+        self.master = data
         Menu.__init__(self, self.master, tearoff=0)
         self._create()
         self._create_commands()
@@ -21,8 +21,8 @@ class HelpMenu(Menu):
 
 class EditMenu(Menu):
 
-    def __init__(self, master, textfield):
-        self.master = master
+    def __init__(self, data, textfield):
+        self.master = data
         self.textField = textfield
         Menu.__init__(self, self.master, tearoff=0)
         self._create()
@@ -39,8 +39,8 @@ class EditMenu(Menu):
 
 class FileMenu(Menu):
 
-    def __init__(self, master, root, textfield):
-        self.master = master
+    def __init__(self, data, root, textfield):
+        self.master = data
         self.textField = textfield
         Menu.__init__(self, self.master, tearoff=0)
         self._create()

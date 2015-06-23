@@ -22,7 +22,6 @@ def perftest(f):
 @perftest
 def bum():
     sleep(1)
-
     
 if __name__ == '__main__':
     pass

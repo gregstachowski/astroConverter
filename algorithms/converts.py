@@ -7,9 +7,9 @@ from common import myformat, clear_list, get_without
 
 class Convert(Tk):
 
-    def __init__(self, textfield, master):
+    def __init__(self, textfield, data):
         Tk.__init__(self)
-        self.master = master
+        self.master = data
         self.textField = textfield
         self.txt = self.textField.get_text()
         self.title("Convert")

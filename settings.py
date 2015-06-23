@@ -17,8 +17,8 @@ class Points:
     base_config = {
                    'unselected_point_color': 'b',
                    'selected_point_color' : 'r',
-                   'unselected_point_line_type': 'o',
-                   'selected_point_line_type' : 'o',
+                   'unselected_point_line_type': '.',
+                   'selected_point_line_type' : '.',
                    'x_label': 'x_label',
                    'y_label': 'y_label',
                    }

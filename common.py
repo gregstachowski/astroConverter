@@ -17,6 +17,10 @@ class Info():
     @staticmethod
     def askyesno(tit, tex):
         return tkinter.messagebox.askyesno(tit, tex)
+    
+    @staticmethod
+    def message(msg1, msg2):
+        tkinter.messagebox.showinfo(msg1, msg2)
 
     @staticmethod
     def license():
@@ -60,6 +64,35 @@ def quicksavefile(directory, text, format=".out"):
     file = open(s, "w")
     file.write(text)
     file.close()
+    
+
+def remove_empty(data):
+    """Removes empty items from list"""
+    out = []
+    for item in data:
+        if item == '': continue
+        out.append(item)
+    return out
+    
+
+def cut_data(data):
+    """cuts two-row data into two seperate lists. Items are formatted as float"""
+    out = [[], []]
+    data = data.split("\n")
+    for line in data:
+        line = line.split(" ")
+        line = remove_empty(line)
+        try:
+            out[0].append(float(line[0]))
+            out[1].append(float(line[1]))
+        except IndexError:
+            pass
+    file = open("test.txt", "w")
+    for i in out[1]: # DELETE
+        file.write(str(i))
+        file.write("\n")
+    file.close()
+    return out
 
 
 def savefile(text):
@@ -150,6 +183,10 @@ def myformat(table):
         except IndexError:
             pass
     return s
+
+def average(data_list):
+    return sum(data_list)/len(data_list)
+
 
 if __name__ == "__main__":
     pass

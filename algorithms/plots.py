@@ -4,6 +4,8 @@ from time import time, sleep
 from algorithms.tests import perftest
 from common import myformat
 from settings import Points
+from widgets.periodbox import PeriodBox
+from algorithms.period import ExperimentalPeriod
 
 # TODO:
 # point finder \/
@@ -22,10 +24,10 @@ class Plot(object):
     
     plot = None
 
-    def __init__(self, list, master):
+    def __init__(self, list, data):
         self.list = list
         Plot.plot = self
-        self.master = master #it's needed for updating text_field #THINKOVER! MAYBE IT'S NOT NEEDED
+        self.master = data #it's needed for updating text_field #THINKOVER! MAYBE IT'S NOT NEEDED
         self.unselected_points = list
         self.selected_points = [[],[]]
         self.create_initial_graph()
@@ -69,7 +71,25 @@ class Plot(object):
         axsave = plt.axes([0.48, 0.04, 0.1, 0.075])
         bsave = Button(axsave, 'Save')
         bsave.on_clicked(self.saveme)
+        axreverse = plt.axes([0.37, 0.04, 0.1, 0.075])
+        breverse = Button(axreverse, "Reverse\nselection")
+        breverse.on_clicked(self.reverse_selection)
+        axperiod = plt.axes([0.26, 0.04, 0.1, 0.075])
+        bperiod = Button(axperiod, "Period")
+        bperiod.on_clicked(self.period_find)
         plt.show()
+    
+    
+    def period_find(self, event):
+        Select_handler.clear_selection(event)
+        PeriodBox(self, "Period", "enter period:") # FUCK THIS SHIT ....
+
+        
+    def reverse_selection(self, event):
+        temporary = self.unselected_points
+        self.unselected_points = self.selected_points
+        self.selected_points = temporary
+        Plot.plot.redraw()
         
     def saveme(self, event):
         directory = self.master.directory
@@ -127,28 +147,33 @@ class Select_handler(RectangleSelector):
                 
     @staticmethod
     def clear_selection(event):
-        """event is unused"""    
-        for iter in range(len(Plot.plot.selected_points[0])):
-            Plot.plot.unselected_points[0].append(Plot.plot.selected_points[0][iter])
-            Plot.plot.unselected_points[1].append(Plot.plot.selected_points[1][iter])
-        Plot.plot.selected_points = [[],[]]
-        Plot.plot.redraw()
+        """event is unused"""
+        plot = Plot.plot
+        selected = plot.selected_points
+        unselected = plot.unselected_points
+        for iter in range(len(plot.selected_points[0])):
+            unselected[0].append(selected[0][iter])
+            unselected[1].append(selected[1][iter])
+        plot.selected_points = [[], []]
+        plot.redraw()
         
     @staticmethod
     def del_selected(event):
-        if len(Plot.plot.selected_points[0]) == 0: return
+        plot = Plot.plot
+        selected = plot.selected_points
+        unselected = plot.unselected_points
+        if len(selected[0]) == 0: return
         #making preperations for updating text field
-        unsel = Plot.plot.unselected_points
-        l = len(unsel[0])
+        l = len(unselected[0])
         out = []
         for iter in range(l):
-            out.append([unsel[0][iter], unsel[1][iter]])
+            out.append([str(unselected[0][iter]), str(unselected[1][iter])])
         #updating text_field
-        Plot.plot.master.clear()
-        Plot.plot.master.insert_text(myformat(out))
+        plot.master.clear()
+        plot.master.insert_text(myformat(out))
         #deleting points
-        Plot.plot.selected_points = [[],[]]
-        Plot.plot.redraw()
+        plot.selected_points = [[],[]]
+        plot.redraw()
         
         
         
