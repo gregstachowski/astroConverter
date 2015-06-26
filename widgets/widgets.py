@@ -30,10 +30,10 @@ class Toolbar(Frame):
     def _create_buttons(self):
         self.b1 = Button(self, text="Open File", command=self.textField.load)
         self.b1.pack(side=LEFT)
-        self.b2 = Button(self, text="Quick Save file",
-                         command=self.textField.quick_save)
+        self.b2 = Button(self, text="Convert", command=self.textField.convert)
         self.b2.pack(side=LEFT)
-        self.b3 = Button(self, text="Convert", command=self.textField.convert)
+        self.b3 = Button(self, text="Quick Save file",
+                         command=self.textField.quick_save)
         self.b3.pack(side=LEFT)
         self.b4 = Button(self, text="Simple Plot", command=self.textField.plot)
         self.b4.pack(side=LEFT)

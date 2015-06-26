@@ -1,4 +1,6 @@
-from algorithms.variability import VariabilityTest
+from algorithms.variability import VariabilityTest, cut_data
+#from variability import VariabilityTest, cut_data
+from time import time
 
 def create_points(jd, mag):
     points = []
@@ -44,19 +46,44 @@ class ExperimentalPeriod(object):
         self.step = 0.0001
         self.calculate()
         
-    def calculate(self):
-        max = 0
-        for i in range(1, 10000):
-            points = Period(self.times, self.magnitudo, 0.9042).calculate()
+    def calculate_ten_times(self):
+        for i in range(1, 10):
+            points = Period(self.times, self.magnitudo, i/10000).calculate()
             t = []
             m = []
             for p in points:
                 t.append(float(p.jd))
                 m.append(float(p.magnitudo))
-            result = VariabilityTest(m, t, 2).calculate()
-            if result > max:
-                max = i
-                print("%s - %s" % (result, i))
-            #print(i/10000 * 100)
-        print(max)
+            new_result = VariabilityTest(m, t, 2).calculate()
         
+    def calculate(self):
+        per = 0
+        result = 0
+        t1 = time()
+        self.calculate_ten_times()
+        avg_time = time() - t1
+        print("It will take %s sec in avg" % (avg_time * 1000))
+        for i in range(1, 10000):
+            points = Period(self.times, self.magnitudo, i/10000).calculate()
+            t = []
+            m = []
+            for p in points:
+                t.append(float(p.jd))
+                m.append(float(p.magnitudo))
+            new_result = VariabilityTest(m, t, 2).calculate()
+            if new_result > result:
+                per = i/10000
+                result = new_result
+                print("Current per: %s\nCurrent result: %s" % (per, result))
+                #print("%s - %s" % (result, i))
+        print("Per: %s\nResult: %s" % (per, result))
+    
+        
+if __name__ == '__main__':
+    file = open("/home/laszlo/workspace/astroConverter/mats/AC-Cru.txt", "r")
+    data = file.read()
+    data = cut_data(data)
+    t1 = time()
+    exp = ExperimentalPeriod(data[0], data[1])
+    print("It took %s seconds" % (time() - t1))
+    

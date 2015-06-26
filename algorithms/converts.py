@@ -113,6 +113,7 @@ def nsvs(text):
 
 
 def asas(text):
+    TO_DEL = [29,99, 99,99]
     CONST = 2450000
     s = get_without(text.split("\n"))
     for x in range(len(s)):
@@ -137,7 +138,12 @@ def asas(text):
             out.append((x, p2[min(p2.keys())]))
         except IndexError:
             pass
-    return myformat(out)
+    out2 = []
+    for line in out:
+        if '29.999' in line or '99.999' in line:
+            continue
+        out2.append(line)
+    return myformat(out2)
 
 
 def munipac(text):
