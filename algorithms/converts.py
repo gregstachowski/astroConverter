@@ -29,6 +29,13 @@ class Convert(Tk):
         self.B4.pack(side=TOP)
         self.B5 = Button(self, text="From munipac", command=self._do_munipac)
         self.B5.pack(side=TOP)
+        self.B6 = Button(self, text="From kepler", command=self._do_kepler)
+        self.B6.pack(side=TOP)
+
+    def _do_kepler(self):
+        self.textField.clear()
+        self.textField.insert_text(kepler(self.txt))
+        self.destroy()
 
     def _do_bhip(self):
         self.textField.clear()
@@ -165,4 +172,16 @@ def munipac(text):
         while len(el) > 2:
             del el[2]
     return myformat(clear_list(text))
-    
+
+
+def kepler(text):
+    to_add = "24"
+    out = []
+    text = text.split("\n")
+    del text[0]
+    del text[-1]
+    for line in text:
+        line = line.split("\t")
+        data = float(line[-2]) * (-1)
+        out.append((to_add + line[0], data))
+    return myformat(clear_list(out))
