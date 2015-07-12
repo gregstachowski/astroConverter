@@ -1,14 +1,15 @@
-from tkinter import Tk, Button, TOP
+from tkinter import Toplevel, Button, TOP
 from common import myformat, clear_list, get_without
+from threading import Thread
 
 # TODO
 # Add custom converts. User have to specify which columns he wants to convert and CONST to add.
 
 
-class Convert(Tk):
+class Convert(Toplevel):
 
     def __init__(self, textfield, data):
-        Tk.__init__(self)
+        Toplevel.__init__(self, data)
         self.master = data
         self.textField = textfield
         self.txt = self.textField.get_text()
@@ -33,8 +34,13 @@ class Convert(Tk):
         self.B6.pack(side=TOP)
 
     def _do_kepler(self):
+        def _worker(textfield, data):
+            data = kepler(data)
+            textfield.clear()
+            textfield.insert_text(data)
         self.textField.clear()
-        self.textField.insert_text(kepler(self.txt))
+        self.textField.insert_text("CALCULATING, PLEASE WAIT!")
+        Thread(target=_worker, args=(self.textField, self.txt)).start()
         self.destroy()
 
     def _do_bhip(self):
