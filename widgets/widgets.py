@@ -6,6 +6,7 @@ from common import Info, loadfile, savefile, text_to_list, quicksavefile, cut_da
 from algorithms.converts import Convert
 from algorithms.plots import Plot
 from algorithms.variability import VariabilityTest
+from settings import title
 
 
 class MainMenu(object):
@@ -75,6 +76,9 @@ class TextField(Text):
                 return
         self.clear()
         x = loadfile() #here we got tuple (directory, text)
+        fileName = x[0].split("/")
+        fileName = fileName[-1]
+        self.master.title(title + " - " + fileName)
         if not x:
             return
         self.directory = x[0]
