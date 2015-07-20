@@ -1,5 +1,6 @@
 from tkinter import Menu
 from common import Info
+from algorithms.converts import MassConvert
 
 
 class HelpMenu(Menu):
@@ -33,6 +34,7 @@ class EditMenu(Menu):
 
     def _create_commands(self):
         self.add_command(label="Convert", command=self.textField.convert)
+        self.add_command(label="Mass convert", command=MassConvert)
         self.add_command(label="Clear", command=self.textField.clear)
         self.add_command(label="Options", command=Info.notimplemented)
 

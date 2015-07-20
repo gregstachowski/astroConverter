@@ -1,10 +1,93 @@
-from tkinter import Toplevel, Button, TOP
+from tkinter import Toplevel, Button, TOP, Label
+import tkinter.filedialog
 from common import myformat, clear_list, get_without
 from threading import Thread
 from time import time
 
 # TODO
 # Add custom converts. User have to specify which columns he wants to convert and CONST to add.
+
+class MassConvert(Toplevel):
+
+    def __init__(self):
+        Toplevel.__init__(self)
+        self.title("MassConvert")
+        self.geometry("350x350")
+        self.info = Label(self, text="Choose data type, then load your files.\n"\
+                          "Converted version will be saved in same directories\n" \
+                          "as *.out files. \n"\
+                          "kepler data is large, convering one file may take\n"\
+                          "few minutes. While converting lots of files, waiting time\n"\
+                          "may be over few hours and program WILL NOT respond.\n"\
+                          "Please be patient.\n")
+        self.info.pack(side=TOP)
+        self.B1 = Button(self, text="From hipparcos", command=self._do_bhip)
+        self.B1.pack(side=TOP)
+        self.B2 = Button(self, text="From Integral", command=self._do_bint)
+        self.B2.pack(side=TOP)
+        self.B3 = Button(self, text="From nsvs", command=self._do_bnsvs)
+        self.B3.pack(side=TOP)
+        self.B4 = Button(self, text="From asas", command=self._do_asas)
+        self.B4.pack(side=TOP)
+        self.B5 = Button(self, text="From munipac", command=self._do_munipac)
+        self.B5.pack(side=TOP)
+        self.B6 = Button(self, text="From kepler", command=self._do_kepler)
+        self.B6.pack(side=TOP)
+        """self.B7 = Button(self, text="From unknown", command=self._do_unknown)
+        self.B7.pack(side=TOP)"""
+
+    def get_files(self):
+        return tkinter.filedialog.askopenfilenames()
+
+    def handle_convertion(self, file, convert_ref):
+        file_ref = file
+        file = open(file, "r")
+        data = file.read()
+        file.close()
+        data = convert_ref(data)
+        directory = file_ref.split("/")
+        del directory[-1]
+        directory = "/".join(directory) + "/"
+        fileName = file_ref.split("/")
+        fileName = fileName[-1]
+        fileName = fileName.split(".")
+        print(fileName)
+        fileName = fileName[0] + ".out"
+        print(directory)
+        print(fileName)
+        file = open(directory + fileName, "w")
+        file.write(data)
+        file.close()
+
+    def _do_bhip(self):
+        files = self.get_files()
+        for file in files:
+            self.handle_convertion(file, hipparcos)
+
+    def _do_asas(self):
+        files = self.get_files()
+        for file in files:
+            self.handle_convertion(file, asas)
+
+    def _do_bint(self):
+        files = self.get_files()
+        for file in files:
+            self.handle_convertion(file, integral)
+
+    def _do_bnsvs(self):
+        files = self.get_files()
+        for file in files:
+            self.handle_convertion(file, nsvs)
+
+    def _do_munipac(self):
+        files = self.get_files()
+        for file in files:
+            self.handle_convertion(file, munipac)
+
+    def _do_kepler(self):
+        files = self.get_files()
+        for file in files:
+            self.handle_convertion(file, kepler)
 
 
 class Convert(Toplevel):
