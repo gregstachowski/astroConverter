@@ -15,7 +15,7 @@ class Convert(Toplevel):
         self.textField = textfield
         self.txt = self.textField.get_text()
         self.title("Convert")
-        self.geometry("150x150")
+        self.geometry("150x200")
         self.master.windows.append(self)
         self.B1, self.B2, self.B3, self.B4, self.B5 = None, None, None, None, None
         self._create()
