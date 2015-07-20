@@ -24,6 +24,7 @@ class Period(object):
     
     def __init__(self, times, magnitudo, period = 0.9042):
         self.points = create_points(times, magnitudo)
+        self.secondPartOfPoints = None
         self.period = period
         self.tolerance = 0.1
         
@@ -33,7 +34,16 @@ class Period(object):
             part1 = calculate_period(float(jd), self.period)
             part2 = int(calculate_period(float(jd), self.period))
             point.jd = part1 - part2
+        self.addSecondPartOfPoints()
         return self.points
+
+    def addSecondPartOfPoints(self):
+        temporaryPoints = []
+        for point in self.points:
+            temporaryPoints.append(Point(point.jd, point.magnitudo))
+        for point in self.points:
+            point.jd += self.period
+        self.points.extend(temporaryPoints)
     
     
 class ExperimentalPeriod(object):
