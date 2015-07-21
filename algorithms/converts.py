@@ -33,8 +33,8 @@ class MassConvert(Toplevel):
         self.B5.pack(side=TOP)
         self.B6 = Button(self, text="From kepler", command=self._do_kepler)
         self.B6.pack(side=TOP)
-        """self.B7 = Button(self, text="From unknown", command=self._do_unknown)
-        self.B7.pack(side=TOP)"""
+        self.B7 = Button(self, text="From Catalina", command=self._do_catalina)
+        self.B7.pack(side=TOP)
 
     def get_files(self):
         return tkinter.filedialog.askopenfilenames()
@@ -58,6 +58,11 @@ class MassConvert(Toplevel):
         file = open(directory + fileName, "w")
         file.write(data)
         file.close()
+
+    def _do_catalina(self):
+        files = self.get_files()
+        for file in files:
+            self.handle_convertion(file, catalina)
 
     def _do_bhip(self):
         files = self.get_files()
@@ -116,12 +121,12 @@ class Convert(Toplevel):
         self.B5.pack(side=TOP)
         self.B6 = Button(self, text="From kepler", command=self._do_kepler)
         self.B6.pack(side=TOP)
-        self.B7 = Button(self, text="From unknown", command=self._do_unknown)
+        self.B7 = Button(self, text="From Catalina", command=self._do_catalina)
         self.B7.pack(side=TOP)
 
-    def _do_unknown(self):
+    def _do_catalina(self):
         self.textField.clear()
-        self.textField.insert_text(unknown(self.txt))
+        self.textField.insert_text(catalina(self.txt))
         self.destroy()
 
     def _do_kepler(self):
@@ -275,7 +280,7 @@ def munipac(text):
     return myformat(clear_list(text))
 
 
-def unknown(text):
+def catalina(text):
     out = []
     TO_ADD = 2400000.5
     text = text.split("\n")
