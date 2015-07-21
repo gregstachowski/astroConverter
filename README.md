@@ -1,5 +1,12 @@
 ## GENERAL INFO
-A project to convert few most common astronomy format data used in photometry. Program provides user with easy way to format data into two-column text format. It allows to create customizable graph and save it as .png files.
+A project to convert few most common astronomy format data used in photometry. Program provides user with easy way to format data into two-column text format. It allows to create customizable graph, calculate periods and save it as .png files.
+
+### FEATURES
+* Converting from databases: Hipparcos, Integral, NSVS, ASAS, Munipack, Kepler, Catalina
+* Creating customizable graphs
+* Calculating periods
+* Multiconverting all files at once.
+
 ### DEPENDENCIES
 * [Python 3.4.3](https://www.python.org/downloads/release/python-343/)
 * [PIP](https://pypi.python.org/pypi/pip)
