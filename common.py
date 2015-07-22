@@ -30,7 +30,10 @@ class Info():
 def loadfile():
     """loads file. Has build-in file format recognize system
     returns tuple(directory, text)"""
-    x = tkinter.filedialog.askopenfilename()
+    try:
+        x = tkinter.filedialog.askopenfilename()
+    except TypeError:
+        return
     if not x:
         return
     y = x.split(".")

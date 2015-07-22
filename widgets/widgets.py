@@ -76,6 +76,8 @@ class TextField(Text):
                 return
         self.clear()
         x = loadfile() #here we got tuple (directory, text)
+        if not x:
+            return
         fileName = x[0].split("/")
         fileName = fileName[-1]
         self.master.title(title + " - " + fileName)
