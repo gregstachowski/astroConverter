@@ -27,7 +27,11 @@ def get_remote_version():
 
 
 def get_local_version():
-    file = open("settings.py")
+    try:
+        file = open("settings.py")
+    except FileNotFoundError:
+        print("Couldn't find setting.py file. Forcing update...")
+        return "0"
     data = file.read()
     file.close()
     return get_version_from_data(data)
@@ -60,6 +64,7 @@ def clean_after():
 
 
 def copy_files():
+    print("Coping files...")
     cmd = "xcopy /Q /S /Y "
     cmd += PROGRAM_PATH + ZIP_DIRECTORY + "\\*"
     cmd += " " + PROGRAM_PATH
