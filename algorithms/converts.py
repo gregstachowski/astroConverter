@@ -1,9 +1,6 @@
 from tkinter import Toplevel, Button, TOP, Label
 import tkinter.filedialog
 from common import myformat, clear_list, get_without
-from threading import Thread
-from time import time
-
 # TODO
 # Add custom converts. User have to specify which columns he wants to convert and CONST to add.
 
@@ -130,15 +127,9 @@ class Convert(Toplevel):
         self.destroy()
 
     def _do_kepler(self):
-        def _worker(textfield, data):
-            t1 = time()
-            data = kepler(data)
-            print("Kepler convertion took: %s" % (time()-t1))
-            textfield.clear()
-            textfield.insert_text(data)
         self.textField.clear()
-        self.textField.insert_text("CALCULATING, PLEASE WAIT!")
-        Thread(target=_worker, args=(self.textField, self.txt)).start()
+        data = kepler(self.textField.directory)
+        self.textField.insert_text(data)
         self.destroy()
 
     def _do_bhip(self):
@@ -295,20 +286,35 @@ def catalina(text):
     return myformat(clear_list(out))
 
 
-def kepler(text):
-    to_add = "24"
+def kepler(path):
+    """ this is temporary solution. It will accept path to the file instead of text from textField. Later, during
+    changes in load system i'm going to rewrte this function """
+    """to_add = "24"
     out = []
     text = text.split("\n")
-    """text=n.loadtxt("")
+    text=n.loadtxt("")
     time=text[:,0]
-    dtr=text[:,-2]"""
+    dtr=text[:,-2]
     del text[0]
-    del text[-1]
     for line in text:
         line = line.split("\t")
+        if len(line) < 2:
+            continue
+        if "#" in line:
+            continue
         data = float(line[-2]) * (-1)
         out.append((to_add + line[0], data))
-    return myformat(clear_list(out))
+    return myformat(clear_list(out))"""
+    import numpy as np
+    data = np.loadtxt(path)
+    first = data[:, 0]
+    second = data[:, -2]
+    out = ""
+    if len(first) != len(second):
+        return "OOPS, ERROR"
+    for i in range(len(first)):
+        out += "24" + str(first[i]) + "\t" + str(second[i] * (-1)) + "\n"
+    return out
 
 
 def kepler2(text):
