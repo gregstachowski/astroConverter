@@ -1,6 +1,7 @@
 from tkinter import Toplevel, Button, TOP, Label
 import tkinter.filedialog
 from common import myformat, clear_list, get_without
+from algorithms.tests import perftest
 # TODO
 # Add custom converts. User have to specify which columns he wants to convert and CONST to add.
 
@@ -286,25 +287,10 @@ def catalina(text):
     return myformat(clear_list(out))
 
 
+@perftest
 def kepler(path):
     """ this is temporary solution. It will accept path to the file instead of text from textField. Later, during
     changes in load system i'm going to rewrte this function """
-    """to_add = "24"
-    out = []
-    text = text.split("\n")
-    text=n.loadtxt("")
-    time=text[:,0]
-    dtr=text[:,-2]
-    del text[0]
-    for line in text:
-        line = line.split("\t")
-        if len(line) < 2:
-            continue
-        if "#" in line:
-            continue
-        data = float(line[-2]) * (-1)
-        out.append((to_add + line[0], data))
-    return myformat(clear_list(out))"""
     import numpy as np
     data = np.loadtxt(path)
     first = data[:, 0]
