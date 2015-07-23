@@ -20,16 +20,17 @@ from algorithms.period import ExperimentalPeriod
 # BUGS:
 # axes titles are dissapearing after selecting points. Add updates...
 
+
 class Plot(object):
-    
+
     plot = None
 
     def __init__(self, list, data):
         self.list = list
         Plot.plot = self
-        self.master = data #it's needed for updating text_field #THINKOVER! MAYBE IT'S NOT NEEDED
+        self.master = data  # it's needed for updating text_field #THINKOVER! MAYBE IT'S NOT NEEDED
         self.unselected_points = list
-        self.selected_points = [[],[]]
+        self.selected_points = [[], []]
         self.create_initial_graph()
         
     def draw_unselected_points(self):
@@ -50,13 +51,12 @@ class Plot(object):
         self.ax.set_xlabel(Points.base_config['x_label'])
         self.ax.set_ylabel(Points.base_config['y_label'])
 
-
     def create_initial_graph(self):
         self.fig = plt.Figure()
         self.ax = plt.subplot(111)
-        #self.set_labels()
+        self.set_labels()
         self.draw_unselected_points()
-        plt.subplots_adjust(bottom=0.2)
+        plt.subplots_adjust(bottom=0.4)
         ax = plt.gca()
         ax.invert_yaxis()
         axdel = plt.axes([0.7, 0.04, 0.1, 0.075])
@@ -77,14 +77,14 @@ class Plot(object):
         axperiod = plt.axes([0.26, 0.04, 0.1, 0.075])
         bperiod = Button(axperiod, "Period")
         bperiod.on_clicked(self.period_find)
+        axrestore = plt.axes([0.15, 0.04, 0.1, 0.075])
+        brestore = Button(axrestore, "Restore\npoints")
         plt.show()
-    
-    
+
     def period_find(self, event):
         Select_handler.clear_selection(event)
         PeriodBox(self, "Period", "enter period:") # FUCK THIS SHIT ....
 
-        
     def reverse_selection(self, event):
         temporary = self.unselected_points
         self.unselected_points = self.selected_points
@@ -162,21 +162,16 @@ class Select_handler(RectangleSelector):
         plot = Plot.plot
         selected = plot.selected_points
         unselected = plot.unselected_points
-        if len(selected[0]) == 0: return
-        #making preperations for updating text field
+        if len(selected[0]) == 0:
+            return
+        # making preperations for updating text field
         l = len(unselected[0])
         out = []
         for iter in range(l):
             out.append([str(unselected[0][iter]), str(unselected[1][iter])])
-        #updating text_field
+        # updating text_field
         plot.master.clear()
         plot.master.insert_text(myformat(out))
-        #deleting points
-        plot.selected_points = [[],[]]
+        # deleting points
+        plot.selected_points = [[], []]
         plot.redraw()
-        
-        
-        
-        
-        
-        
