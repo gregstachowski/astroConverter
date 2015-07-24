@@ -5,6 +5,7 @@ from algorithms.tests import perftest
 from common import myformat
 from settings import Points
 from widgets.periodbox import PeriodBox
+import copy
 from algorithms.period import ExperimentalPeriod
 
 # TODO:
@@ -28,6 +29,7 @@ class Plot(object):
     def __init__(self, list, data):
         self.list = list
         Plot.plot = self
+        self.backup = copy.deepcopy(list)
         self.master = data  # it's needed for updating text_field #THINKOVER! MAYBE IT'S NOT NEEDED
         self.unselected_points = list
         self.selected_points = [[], []]
@@ -79,7 +81,13 @@ class Plot(object):
         bperiod.on_clicked(self.period_find)
         axrestore = plt.axes([0.15, 0.04, 0.1, 0.075])
         brestore = Button(axrestore, "Restore\npoints")
+        brestore.on_clicked(self.restore_points)
         plt.show()
+
+    def restore_points(self, event):
+        self.selected_points = [[], []]
+        self.unselected_points = copy.deepcopy(self.backup)
+        self.redraw()
 
     def period_find(self, event):
         Select_handler.clear_selection(event)
