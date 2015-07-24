@@ -6,6 +6,7 @@ from common import myformat
 from settings import Points
 from widgets.periodbox import PeriodBox
 import copy
+from tkinter import filedialog
 from algorithms.period import ExperimentalPeriod
 
 # TODO:
@@ -101,6 +102,12 @@ class Plot(object):
         
     def saveme(self, event):
         directory = self.master.directory
+        if not directory:
+            directory = filedialog.asksaveasfilename()
+            self.master.directory = directory  # setting new directory for textField
+            extent = self.ax.get_window_extent().transformed(self.fig.dpi_scale_trans.inverted())
+            plt.savefig(directory, bbox_inches=extent.expanded(1.3, 1.2))
+            return
         directory = directory.split("/")
         name = directory[-1]
         name = name.split(".")
