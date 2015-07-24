@@ -59,7 +59,7 @@ class Plot(object):
         self.ax = plt.subplot(111)
         self.set_labels()
         self.draw_unselected_points()
-        plt.subplots_adjust(bottom=0.4)
+        plt.subplots_adjust(bottom=0.2)
         ax = plt.gca()
         ax.invert_yaxis()
         axdel = plt.axes([0.7, 0.04, 0.1, 0.075])
