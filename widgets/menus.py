@@ -1,10 +1,10 @@
 from tkinter import Menu
+
 from common import Info
 from algorithms.converts import MassConvert
 
 
 class HelpMenu(Menu):
-
     def __init__(self, data):
         self.master = data
         Menu.__init__(self, self.master, tearoff=0)
@@ -21,7 +21,6 @@ class HelpMenu(Menu):
 
 
 class EditMenu(Menu):
-
     def __init__(self, data, textfield):
         self.master = data
         self.textField = textfield
@@ -40,7 +39,6 @@ class EditMenu(Menu):
 
 
 class FileMenu(Menu):
-
     def __init__(self, data, root, textfield):
         self.master = data
         self.textField = textfield

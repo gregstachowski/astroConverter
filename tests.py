@@ -19,8 +19,8 @@ def test_nsvs_converting():
 def test_hipparcos_converting():
     file = open("mats/hipparcos.txt").read()
     print(hipparcos(file))
-    
-    
+
+
 def test_munipac_converting():
     file = open("mats/munipack.txt").read()
     print(munipac(file))
@@ -31,7 +31,7 @@ def converting_tests():
     test_nsvs_converting()
     test_integral_converting()
     test_hipparcos_converting()
-    
+
 
 if __name__ == "__main__":
     test_munipac_converting()

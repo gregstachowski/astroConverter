@@ -1,23 +1,25 @@
 from tkinter import Toplevel, Button, TOP, Label
 import tkinter.filedialog
+
 from common import myformat, clear_list, get_without
 from algorithms.tests import perftest
+
+
 # TODO
 # Add custom converts. User have to specify which columns he wants to convert and CONST to add.
 
 class MassConvert(Toplevel):
-
     def __init__(self):
         Toplevel.__init__(self)
         self.title("MassConvert")
         self.geometry("350x350")
-        self.info = Label(self, text="Choose data type, then load your files.\n"\
-                          "Converted version will be saved in same directories\n" \
-                          "as *.out files. \n"\
-                          "kepler data is large, convering one file may take\n"\
-                          "few minutes. While converting lots of files, waiting time\n"\
-                          "may be over few hours and program WILL NOT respond.\n"\
-                          "Please be patient.\n")
+        self.info = Label(self, text="Choose data type, then load your files.\n"
+                                     "Converted version will be saved in same directories\n"
+                                     "as *.out files. \n"
+                                     "kepler data is large, convering one file may take\n"
+                                     "few minutes. While converting lots of files, waiting time\n"
+                                     "may be over few hours and program WILL NOT respond.\n"
+                                     "Please be patient.\n")
         self.info.pack(side=TOP)
         self.B1 = Button(self, text="From hipparcos", command=self._do_bhip)
         self.B1.pack(side=TOP)
@@ -46,14 +48,14 @@ class MassConvert(Toplevel):
         directory = file_ref.split("/")
         del directory[-1]
         directory = "/".join(directory) + "/"
-        fileName = file_ref.split("/")
-        fileName = fileName[-1]
-        fileName = fileName.split(".")
-        print(fileName)
-        fileName = fileName[0] + ".out"
+        file_name = file_ref.split("/")
+        file_name = file_name[-1]
+        file_name = file_name.split(".")
+        print(file_name)
+        file_name = file_name[0] + ".out"
         print(directory)
-        print(fileName)
-        file = open(directory + fileName, "w")
+        print(file_name)
+        file = open(directory + file_name, "w")
         file.write(data)
         file.close()
 
@@ -94,7 +96,6 @@ class MassConvert(Toplevel):
 
 
 class Convert(Toplevel):
-
     def __init__(self, textfield, data):
         Toplevel.__init__(self, data)
         self.master = data
@@ -152,12 +153,12 @@ class Convert(Toplevel):
         self.textField.clear()
         self.textField.insert_text(asas(self.txt))
         self.destroy()
-        
+
     def _do_munipac(self):
         self.textField.clear()
         self.textField.insert_text(munipac(self.txt))
         self.destroy()
-        
+
 
 def hipparcos(text):
     const = 2440000
@@ -216,11 +217,11 @@ def nsvs(text):
 
 
 def asas(text):
-    TO_DEL = (29,99, 99,99)
+    to_del = (29, 99, 99, 99)
     const = 2450000
     s = get_without(text.split("\n"))
     for x in range(len(s)):
-        s[x-1] = s[x-1].split(" ")
+        s[x - 1] = s[x - 1].split(" ")
     for element in s:
         clear_list(element)
     p = s
@@ -235,10 +236,10 @@ def asas(text):
                 s[10]: s[5],
             }
             # creating float because we need sum, and can't use int()
-            x = float(s[0])+const
+            x = float(s[0]) + const
             # converting float to string, because we need string for myformat()
             x = str(x)
-            if x in TO_DEL:
+            if x in to_del:
                 continue
             out.append((x, p2[min(p2.keys())]))
         except IndexError:
@@ -255,14 +256,14 @@ def munipac(text):
     to_del = ("9.9999", "99.9999")
     text = text.split("\n")
     for x in range(len(text)):
-        text[x-1] = text[x-1].split(" ")
+        text[x - 1] = text[x - 1].split(" ")
     del text[0]
     del text[0]
     for y in range(len(text)):
         try:
-            for x in range(len(text[y-1])):
-                if text[y-1][x-1] in to_del:
-                    del text[y-1]
+            for x in range(len(text[y - 1])):
+                if text[y - 1][x - 1] in to_del:
+                    del text[y - 1]
                     break
         except IndexError:
             pass
@@ -274,13 +275,13 @@ def munipac(text):
 
 def catalina(text):
     out = []
-    TO_ADD = 2400000.5
+    to_add = 2400000.5
     text = text.split("\n")
     del text[0]
     del text[-1]
     for line in text:
         line = line.split(",")
-        mjd = float(line[-2]) + TO_ADD
+        mjd = float(line[-2]) + to_add
         mag = line[1]
         mjd = str(mjd)
         out.append((mjd, mag))
@@ -308,7 +309,7 @@ def kepler2(text):
     from numpy import delete, append
     # to_add = "24"
     data = array(text.split("\n"))
-    data = delete(data, (0, len(data)-1))
+    data = delete(data, (0, len(data) - 1))
     out = array([])
     for row in data:
         row = row.split("\t")

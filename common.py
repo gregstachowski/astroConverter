@@ -1,6 +1,7 @@
-import tkinter.messagebox, tkinter.filedialog
+import tkinter.messagebox
+import tkinter.filedialog
+
 from astropy.io import fits
-import numpy
 
 
 class Info():
@@ -17,7 +18,7 @@ class Info():
     @staticmethod
     def askyesno(tit, tex):
         return tkinter.messagebox.askyesno(tit, tex)
-    
+
     @staticmethod
     def message(msg1, msg2):
         tkinter.messagebox.showinfo(msg1, msg2)
@@ -46,7 +47,7 @@ def loadfile():
         b = tbdata.field('TAMFLUX2')
         out = ""
         for i in range(len(a)):
-            out += str(a[i]) + " "*5 + str(b[i]) + "\n"
+            out += str(a[i]) + " " * 5 + str(b[i]) + "\n"
         return (x, out)
     else:
         file = open(x)
@@ -67,16 +68,17 @@ def quicksavefile(directory, text, format=".out"):
     file = open(s, "w")
     file.write(text)
     file.close()
-    
+
 
 def remove_empty(data):
     """Removes empty items from list"""
     out = []
     for item in data:
-        if item == '': continue
+        if item == '':
+            continue
         out.append(item)
     return out
-    
+
 
 def cut_data(data):
     """cuts two-row data into two seperate lists. Items are formatted as float"""
@@ -91,7 +93,7 @@ def cut_data(data):
         except IndexError:
             pass
     file = open("test.txt", "w")
-    for i in out[1]: # DELETE
+    for i in out[1]:  # DELETE
         file.write(str(i))
         file.write("\n")
     file.close()
@@ -136,16 +138,16 @@ def text_to_list(text):
 def del_empty(list):
     """deletes empty elements in lists"""
     for x in range(len(list)):
-        if len(list[x-1]) == 0:
-            del list[x-1]
+        if len(list[x - 1]) == 0:
+            del list[x - 1]
     return list
 
 
 def del_empty_space(list):
     """deletes empty elements with "space" in it"""
     for x in range(len(list)):
-        if " " in list[x-1]:
-            del list[x-1]
+        if " " in list[x - 1]:
+            del list[x - 1]
     return list
 
 
@@ -171,6 +173,7 @@ def get_without(list, char="#"):
             s.append(line)
     return s
 
+
 def myformat(table):
     """creates str from table and formats it"""
     m = 0
@@ -178,7 +181,7 @@ def myformat(table):
         if len(t[0]) > m:
             m = len(t[0])
     m += 5
-    fstr = "{0:"+str(m)+"}{1:"+str(m)+"}"
+    fstr = "{0:" + str(m) + "}{1:" + str(m) + "}"
     s = ""
     for x in table:
         try:
@@ -187,8 +190,9 @@ def myformat(table):
             pass
     return s
 
+
 def average(data_list):
-    return sum(data_list)/len(data_list)
+    return sum(data_list) / len(data_list)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,8 @@
-from widgets.menus import FileMenu, EditMenu, HelpMenu
 from tkinter import Frame, Button, TOP, RIGHT, BOTTOM, X, Y, LEFT
 from tkinter import Text, NONE, BOTH, YES, END
 from tkinter import Scrollbar, VERTICAL, HORIZONTAL
+
+from widgets.menus import FileMenu, EditMenu, HelpMenu
 from common import Info, loadfile, savefile, text_to_list, quicksavefile, cut_data
 from algorithms.converts import Convert
 from algorithms.plots import Plot
@@ -10,7 +11,6 @@ from settings import title
 
 
 class MainMenu(object):
-
     def __init__(self, data, root, textfield):
         self.textField = textfield
         self.fileMenu = FileMenu(data, root, self.textField)
@@ -19,7 +19,6 @@ class MainMenu(object):
 
 
 class Toolbar(Frame):
-
     def __init__(self, data, textfield):
         self.textField = textfield
         Frame.__init__(self, data)
@@ -43,7 +42,6 @@ class Toolbar(Frame):
 
 
 class TextField(Text):
-
     def __init__(self, data):
         self.master = data
         Text.__init__(self, self.master, width=50, height=30, wrap=NONE)
@@ -75,12 +73,12 @@ class TextField(Text):
             if not s:
                 return
         self.clear()
-        x = loadfile() #here we got tuple (directory, text)
+        x = loadfile()  # here we got tuple (directory, text)
         if not x:
             return
-        fileName = x[0].split("/")
-        fileName = fileName[-1]
-        self.master.title(title + " - " + fileName)
+        filename = x[0].split("/")
+        filename = filename[-1]
+        self.master.title(title + " - " + filename)
         if not x:
             return
         self.directory = x[0]
@@ -97,9 +95,9 @@ class TextField(Text):
 
     def plot(self):
         Plot(text_to_list(self.get_text()), self)
-    
+
     def variability(self):
         data = cut_data(self.get_text())
-        varability = VariabilityTest(data[0], data[1], deviation_weight = 1, percentage_condition=0)
+        varability = VariabilityTest(data[0], data[1], deviation_weight=1, percentage_condition=0)
         test = varability.calculate()
         Info.message("VariabilityTest", "Variability: %s" % test)

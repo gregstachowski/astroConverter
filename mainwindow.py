@@ -1,7 +1,8 @@
 from tkinter import Tk, Menu
+from _tkinter import TclError
+
 from widgets.widgets import MainMenu, Toolbar, TextField
 import settings
-from _tkinter import TclError
 
 
 class MrRoot(Tk):
@@ -23,20 +24,20 @@ class MrRoot(Tk):
     def configure(self):
         self.title(settings.title + settings.version)
         self.geometry(settings.size)
-        
+
     def destroy(self):
         to_destroy = []
         for x in range(len(self.windows)):
             try:
-                self.windows[x-1].destroy()
-                to_destroy.append(self.windows[x-1])
+                self.windows[x - 1].destroy()
+                to_destroy.append(self.windows[x - 1])
             except TclError:
-                to_destroy.append(self.windows[x-1])
+                to_destroy.append(self.windows[x - 1])
         for x in to_destroy:
             self.windows.remove(x)
         print(self.windows)
         Tk.destroy(self)
-        
+
 
 if __name__ == "__main__":
     MrRoot()

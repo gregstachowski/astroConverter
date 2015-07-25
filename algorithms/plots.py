@@ -1,13 +1,14 @@
+import copy
+from tkinter import filedialog
+
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button, RectangleSelector
-from time import time, sleep
+
 from algorithms.tests import perftest
 from common import myformat
 from settings import Points
 from widgets.periodbox import PeriodBox
-import copy
-from tkinter import filedialog
-from algorithms.period import ExperimentalPeriod
+
 
 # TODO:
 # point finder \/
@@ -35,6 +36,8 @@ class Plot(object):
         self.unselected_points = list
         self.selected_points = [[], []]
         self.create_initial_graph()
+        self.fig = None
+        self.ax = None
         
     def draw_unselected_points(self):
         plt.axes(self.ax)
@@ -46,9 +49,9 @@ class Plot(object):
     def draw_selected_points(self):
         plt.axes(self.ax)
         self.ax.plot(self.selected_points[0], self.selected_points[1],
-                    Points.base_config['selected_point_line_type'],
-                    color=Points.base_config['selected_point_color'],
-                    )
+                     Points.base_config['selected_point_line_type'],
+                     color=Points.base_config['selected_point_color'],
+                     )
         
     def set_labels(self):
         self.ax.set_xlabel(Points.base_config['x_label'])
@@ -66,11 +69,11 @@ class Plot(object):
         axselect = plt.axes([0.81, 0.04, 0.1, 0.075])
         axclear_select = plt.axes([0.59, 0.04, 0.1, 0.075])
         bclr_select = Button(axclear_select, 'Clear \nselection')
-        bclr_select.on_clicked(Select_handler.clear_selection)
+        bclr_select.on_clicked(SelectHandler.clear_selection)
         bselect = Button(axselect, 'Select')
-        bselect.on_clicked(Select_handler)
+        bselect.on_clicked(SelectHandler)
         bdel = Button(axdel, 'Delete')
-        bdel.on_clicked(Select_handler.del_selected)
+        bdel.on_clicked(SelectHandler.del_selected)
         axsave = plt.axes([0.48, 0.04, 0.1, 0.075])
         bsave = Button(axsave, 'Save')
         bsave.on_clicked(self.saveme)
@@ -91,8 +94,8 @@ class Plot(object):
         self.redraw()
 
     def period_find(self, event):
-        Select_handler.clear_selection(event)
-        PeriodBox(self, "Period", "enter period:") # FUCK THIS SHIT ....
+        SelectHandler.clear_selection(event)
+        PeriodBox(self, "Period", "enter period:")  # FUCK THIS SHIT ....
 
     def reverse_selection(self, event):
         temporary = self.unselected_points
@@ -129,7 +132,7 @@ class Plot(object):
         plt.draw()
 
         
-class Select_handler(RectangleSelector):
+class SelectHandler(RectangleSelector):
     
     def __init__(self, event):
         RectangleSelector.__init__(self, Plot.plot.ax, onselect=self.onselect)
