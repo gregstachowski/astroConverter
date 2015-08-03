@@ -3,9 +3,9 @@ from tkinter import Toplevel, Entry, Label, Button
 from algorithms.period import Period
 
 
-def calculate_period(master, period):
+def calculate_period(master, period, is_phase, mo):
     p = Period(master.unselected_points[0], master.unselected_points[1],
-               period=period)
+               mo, is_phase, period=period)
     p = p.calculate()
     master.unselected_points = [[], []]
     for point in p:
@@ -15,20 +15,29 @@ def calculate_period(master, period):
 
 
 class PeriodBox(object):
-    def __init__(self, master, title, message):
+    def __init__(self, master, title):
         self.master = master
         self.root = Toplevel(self.master.master)
         self.root.title(title)
-        Label(self.root, text=message).pack()
-        self.entry = Entry(self.root)
-        self.entry.pack()
-        b = Button(self.root, text="OK",
-                   command=self.quit)
-        b.pack()
+        Label(self.root, text="M_0: ").pack()
+        self.entry1 = Entry(self.root)
+        self.entry1.pack()
+        self.entry1.insert(0, "2450000")
+        Label(self.root, text="period: ").pack()
+        self.entry2 = Entry(self.root)
+        self.entry2.pack()
+        Button(self.root, text="Phase", command=self.phase).pack()
+        Button(self.root, text="JDHel", command=self.jdhel).pack()
         # self.root.mainloop()
 
-    def quit(self):
-        calculate_period(self.master, float(self.entry.get()))
+    def phase(self):
+        self.quit(True)
+
+    def jdhel(self):
+        self.quit(False)
+
+    def quit(self, is_phase):
+        calculate_period(self.master, float(self.entry2.get()), is_phase, float(self.entry1.get()))
         self.root.destroy()
 
 

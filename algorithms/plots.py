@@ -95,7 +95,7 @@ class Plot(object):
 
     def period_find(self, event):
         SelectHandler.clear_selection(event)
-        PeriodBox(self, "Period", "enter period:")  # FUCK THIS SHIT ....
+        PeriodBox(self, "Period")  # FUCK THIS SHIT ....
 
     def reverse_selection(self, event):
         temporary = self.unselected_points
