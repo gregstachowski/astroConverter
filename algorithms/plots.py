@@ -8,6 +8,7 @@ from algorithms.tests import perftest
 from common import myformat
 from settings import Points
 from widgets.periodbox import PeriodBox
+from operator import itemgetter
 
 
 # TODO:
@@ -124,7 +125,18 @@ class Plot(object):
         plt.savefig(directory, bbox_inches=extent.expanded(1.3, 1.2))
 
     @perftest
+    def update_text_field(self):
+        selected = zip(self.selected_points[0], self.selected_points[1])
+        unselected = zip(self.unselected_points[0], self.unselected_points[1])
+        all = list(selected) + list(unselected)
+        all = sorted(all, key=itemgetter(1))
+        # updating text_field
+        self.master.clear()
+        self.master.insert_text(myformat(all))
+
+    @perftest
     def redraw(self):
+        self.update_text_field()
         plt.axes(self.ax)
         plt.cla()
         self.draw_selected_points()

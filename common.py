@@ -178,6 +178,7 @@ def myformat(table):
     """creates str from table and formats it"""
     m = 0
     for t in table:
+        t = str(t)
         if len(t[0]) > m:
             m = len(t[0])
     m += 5
