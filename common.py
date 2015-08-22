@@ -176,7 +176,7 @@ def get_without(list, char="#"):
 
 def myformat(table):
     """creates str from table and formats it"""
-    m = 0
+    """m = 0
     for t in table:
         t = str(t)
         if len(t[0]) > m:
@@ -186,10 +186,16 @@ def myformat(table):
     s = ""
     for x in table:
         try:
-            s += fstr.format(x[0], x[1]) + "\n"
+            x = str(x[0])
+            y = str(x[1])
+            s += fstr.format(x, y) + "\n"
         except IndexError:
             pass
-    return s
+    return s"""
+    out = ""
+    for pair in table:
+        out += str(pair[0]) + 5*" " + str(pair[1]) + "\n"
+    return out
 
 
 def average(data_list):
