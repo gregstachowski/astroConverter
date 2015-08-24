@@ -126,13 +126,15 @@ class Plot(object):
 
     @perftest
     def update_text_field(self):
-        selected = zip(self.selected_points[0], self.selected_points[1])
-        unselected = zip(self.unselected_points[0], self.unselected_points[1])
+        selected = zip(list(map(float, self.selected_points[0])), list(map(float, self.selected_points[1])))
+        # selected = zip(self.selected_points[0], self.selected_points[1])
+        unselected = zip(list(map(float, self.unselected_points[0])), list(map(float, self.unselected_points[1])))
         all = list(selected) + list(unselected)
-        all = sorted(all, key=itemgetter(1))
+        all = sorted(all, key=itemgetter(0))
         # updating text_field
         self.master.clear()
-        self.master.insert_text(myformat(all))
+        all = myformat(all)
+        self.master.insert_text(all)
 
     @perftest
     def redraw(self):
@@ -195,13 +197,6 @@ class SelectHandler(RectangleSelector):
         if len(selected[0]) == 0:
             return
         # making preperations for updating text field
-        l = len(unselected[0])
-        out = []
-        for iter in range(l):
-            out.append([str(unselected[0][iter]), str(unselected[1][iter])])
-        # updating text_field
-        plot.master.clear()
-        plot.master.insert_text(myformat(out))
         # deleting points
         plot.selected_points = [[], []]
         plot.redraw()

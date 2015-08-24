@@ -4,13 +4,16 @@ from algorithms.period import Period
 
 
 def calculate_period(master, period, is_phase, mo):
-    p = Period(master.unselected_points[0], master.unselected_points[1],
+    p = Period(master.unselected_points[0],
+               master.unselected_points[1],
                mo, is_phase, period=period)
     p = p.calculate()
     master.unselected_points = [[], []]
     for point in p:
-        master.unselected_points[0].append(point.jd)
-        master.unselected_points[1].append(point.magnitudo)
+        jd = str(point.jd)
+        magnitudo = str(point.magnitudo)
+        master.unselected_points[0].append(jd)
+        master.unselected_points[1].append(magnitudo)
     master.redraw()
 
 
