@@ -2,6 +2,7 @@ import tkinter.messagebox
 import tkinter.filedialog
 
 from astropy.io import fits
+from operator import itemgetter
 
 
 class Info():
@@ -176,26 +177,28 @@ def get_without(list, char="#"):
 
 def myformat(table):
     """creates str from table and formats it"""
-    """m = 0
+    m = 0
+    table = sorted(table, key=itemgetter(0))
     for t in table:
         t = str(t)
         if len(t[0]) > m:
             m = len(t[0])
-    m += 5
-    fstr = "{0:" + str(m) + "}{1:" + str(m) + "}"
+    m += 10
+    fstr = "{0:}" + m*" " + "{1:}"
     s = ""
     for x in table:
         try:
-            x = str(x[0])
-            y = str(x[1])
-            s += fstr.format(x, y) + "\n"
+            a = float(x[0])
+            b = float(x[1])
+            s += "{0:.5f}{1:{width}}".format(a, b, width=m) + "\n"
         except IndexError:
             pass
-    return s"""
+    return s
+    """
     out = ""
     for pair in table:
         out += str(pair[0]) + 5*" " + str(pair[1]) + "\n"
-    return out
+    return out"""
 
 
 def average(data_list):

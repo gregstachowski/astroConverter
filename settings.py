@@ -1,5 +1,5 @@
 title = "astroConverter"
-version = "0.4.6"
+version = "0.4.65"
 size = "800x600"
 license = """
 The MIT License (MIT)
