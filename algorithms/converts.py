@@ -249,7 +249,7 @@ def asas(text):
         if '29.999' in line or '99.999' in line:
             continue
         out2.append(line)
-    return myformat(out2)
+    return myformat(clear_list(out2))
 
 
 def munipac(text):

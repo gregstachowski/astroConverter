@@ -2,6 +2,7 @@ import tkinter.messagebox
 import tkinter.filedialog
 
 from astropy.io import fits
+import numpy
 from operator import itemgetter
 
 
@@ -44,8 +45,8 @@ def loadfile():
         # add proper formating etc
         hdulist = fits.open(x)
         tbdata = hdulist[1].data
-        a = tbdata.field('TMID')
-        b = tbdata.field('TAMFLUX2')
+        a = tbdata.field('TMID')/86400.0 + 2453005.5
+        b = 15 - 2.5*numpy.log10(tbdata.field('TAMFLUX2'))
         out = ""
         for i in range(len(a)):
             out += str(a[i]) + " " * 5 + str(b[i]) + "\n"
