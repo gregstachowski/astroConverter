@@ -300,7 +300,7 @@ def kepler(path):
     if len(first) != len(second):
         return "OOPS, ERROR"
     for i in range(len(first)):
-        out += "24" + str(first[i]) + "\t" + str(second[i] * (-1)) + "\n"
+        out += "24" + str(first[i]) + "\t" + str(second[i]) + "\n"
     return out
 
 
