@@ -1,14 +1,5 @@
-"""
-******** INFO ********
-Created by Konrad Wybraniec
-konrad.wybraniec@gmail.com
-**********************
-"""
+from converts.converts import convert_hipparcos
 
-from mainwindow import MrRoot
-
-if __name__ == '__main__':
-    root = MrRoot()
-    root.configure()
-    root.mainloop()
-# this is testing comment.
+data = convert_hipparcos("/home/laszlo/workspace/astroConverter/raw_data/hipparcos.txt")
+print(data[0])
+print(data[1])
