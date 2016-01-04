@@ -1,5 +1,5 @@
-from converts.converts import convert_hipparcos
+from gui.main_window import MainWindow
 
-data = convert_hipparcos("/home/laszlo/workspace/astroConverter/raw_data/hipparcos.txt")
-print(data[0])
-print(data[1])
+m = MainWindow()
+m.initial_config()
+m.start()
