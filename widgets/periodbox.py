@@ -1,19 +1,17 @@
 from tkinter import Toplevel, Entry, Label, Button
 
 from algorithms.period import Period
-
+import numpy as np
 
 def calculate_period(master, period, is_phase, mo):
-    p = Period(master.unselected_points[0],
-               master.unselected_points[1],
+
+    p = Period(master.unselected_points[0,:].tolist(),
+               master.unselected_points[1,:].tolist(),
                mo, is_phase, period=period)
     p = p.calculate()
-    master.unselected_points = [[], []]
+    master.unselected_points = np.array([[],[]])
     for point in p:
-        jd = str(point.jd)
-        magnitudo = str(point.magnitudo)
-        master.unselected_points[0].append(jd)
-        master.unselected_points[1].append(magnitudo)
+        master.unselected_points = np.hstack((master.unselected_points, [[point.jd],[point.magnitudo]]))
     master.redraw()
 
 
@@ -29,6 +27,7 @@ class PeriodBox(object):
         Label(self.root, text="period: ").pack()
         self.entry2 = Entry(self.root)
         self.entry2.pack()
+        self.entry2.insert(0, "10")
         Button(self.root, text="Phase", command=self.phase).pack()
         Button(self.root, text="JDHel", command=self.jdhel).pack()
         # self.root.mainloop()

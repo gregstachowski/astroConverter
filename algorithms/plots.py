@@ -10,6 +10,8 @@ from settings import Points
 from widgets.periodbox import PeriodBox
 from operator import itemgetter
 
+import numpy as np
+import io
 
 # TODO:
 # point finder \/
@@ -32,31 +34,33 @@ class Plot(object):
     def __init__(self, list, data):
         self.list = list
         Plot.plot = self
-        self.backup = copy.deepcopy(list)
         self.master = data  # it's needed for updating text_field #THINKOVER! MAYBE IT'S NOT NEEDED
-        self.unselected_points = list
-        self.selected_points = [[], []]
+        a = np.asarray(self.list).astype(np.float)
+        self.unselected_points = np.asarray(list).astype(np.float)
+        self.backup = np.copy(self.unselected_points)
+        self.selected_points = np.array([[],[]])
         self.create_initial_graph()
         self.fig = None
         self.ax = None
         
     def draw_unselected_points(self):
         plt.axes(self.ax)
-        self.ax.plot(self.unselected_points[0], self.unselected_points[1],
+        self.ax.plot(self.unselected_points[0,:], self.unselected_points[1,:],
                      Points.base_config['unselected_point_line_type'], 
                      color=Points.base_config['unselected_point_color'],
                      )
         
     def draw_selected_points(self):
         plt.axes(self.ax)
-        self.ax.plot(self.selected_points[0], self.selected_points[1],
+        self.ax.plot(self.selected_points[0,:], self.selected_points[1,:],
                      Points.base_config['selected_point_line_type'],
                      color=Points.base_config['selected_point_color'],
                      )
         
     def set_labels(self):
-        self.ax.set_xlabel(Points.base_config['x_label'])
-        self.ax.set_ylabel(Points.base_config['y_label'])
+        # self.ax.set_xlabel(Points.base_config['x_label'])
+        # self.ax.set_ylabel(Points.base_config['y_label'])
+        return
 
     def create_initial_graph(self):
         self.fig = plt.Figure()
@@ -76,7 +80,7 @@ class Plot(object):
         bclr_select = Button(axclear_select, 'Clear \nselection')
         bclr_select.on_clicked(SelectHandler.clear_selection)
         bselect = Button(axselect, 'Select')
-        bselect.on_clicked(SelectHandler)
+        bselect.on_clicked(self.start_selector)
         bdel = Button(axdel, 'Delete')
         bdel.on_clicked(SelectHandler.del_selected)
         bsave = Button(axsave, 'Save')
@@ -87,21 +91,26 @@ class Plot(object):
         bperiod.on_clicked(self.period_find)
         brestore = Button(axrestore, "Restore\npoints")
         brestore.on_clicked(self.restore_points)
+        # ax.ticklabel_format(axis='x', style='plain',scilimits=(8,8)) #,useOffset=2456000)
         plt.show()
 
     def restore_points(self, event):
-        self.selected_points = [[], []]
-        self.unselected_points = copy.deepcopy(self.backup)
+        self.unselected_points = np.copy(self.backup)
+        self.selected_points = np.array([[],[]])
         self.redraw()
+
+    def start_selector(self, event):
+        # self.axselect.bselect.color('red')
+        SelectHandler(event)
 
     def period_find(self, event):
         SelectHandler.clear_selection(event)
-        PeriodBox(self, "Period")  # FUCK THIS SHIT ....
+        PeriodBox(self, "Period")
 
     def reverse_selection(self, event):
-        temporary = self.unselected_points
-        self.unselected_points = self.selected_points
-        self.selected_points = temporary
+        temporary = np.copy(self.unselected_points)
+        self.unselected_points = np.copy(self.selected_points)
+        self.selected_points = np.copy(temporary)
         Plot.plot.redraw()
         
     def saveme(self, event):
@@ -124,34 +133,31 @@ class Plot(object):
         extent = self.ax.get_window_extent().transformed(self.fig.dpi_scale_trans.inverted())
         plt.savefig(directory, bbox_inches=extent.expanded(1.3, 1.2))
 
-    @perftest
+    # @perftest
     def update_text_field(self):
-        selected = zip(list(map(float, self.selected_points[0])), list(map(float, self.selected_points[1])))
-        # selected = zip(self.selected_points[0], self.selected_points[1])
-        unselected = zip(list(map(float, self.unselected_points[0])), list(map(float, self.unselected_points[1])))
-        all = list(selected) + list(unselected)
-        all = sorted(all, key=itemgetter(0))
-        # updating text_field
         self.master.clear()
-        all = myformat(all)
-        self.master.insert_text(all)
+        all = io.BytesIO()
+        np.savetxt(all,self.unselected_points.T,"%.8f %.6f")
+        self.master.insert_text(all.getvalue())
 
-    @perftest
+    # @perftest
     def redraw(self):
         self.update_text_field()
         plt.axes(self.ax)
+        plt.ticklabel_format(axis='x', style='plain')
         plt.cla()
         self.draw_selected_points()
         self.draw_unselected_points()
+        self.ax.invert_yaxis()
         plt.draw()
 
         
 class SelectHandler(RectangleSelector):
     
     def __init__(self, event):
-        RectangleSelector.__init__(self, Plot.plot.ax, onselect=self.onselect)
+        RectangleSelector.__init__(self, Plot.plot.ax, onselect=self.onselect, useblit=True)
      
-    @perftest   
+    # @perftest   
     def onselect(self, eclick, erelease):
         def is_in_range(xdata, ydata):
             x = float(xdata)
@@ -159,34 +165,29 @@ class SelectHandler(RectangleSelector):
             if eclick.xdata <= x <= erelease.xdata or erelease.xdata <= x <= eclick.xdata:
                 if eclick.ydata <= y <= erelease.ydata or erelease.ydata <= y <= eclick.ydata:
                     return True
+            return False
         unsel = Plot.plot.unselected_points
         sel = Plot.plot.selected_points
-        all_unsel_len = len(unsel[0])
+        all_unsel_len = np.shape(unsel)[1]
         to_del = []
         for iter in range(all_unsel_len):
-            xcord = unsel[0][iter]
-            ycord = unsel[1][iter]
-            if is_in_range(xcord, ycord):
-                sel[0].append(xcord)
-                sel[1].append(ycord)
+            if is_in_range(unsel[0,iter], unsel[1,iter]):
                 to_del.append(iter)
-        to_del.sort(reverse=True)
-        for index in to_del:
-            del unsel[0][index]
-            del unsel[1][index]
-        self.disconnect_events()
+
+        sel = np.hstack((sel,unsel[:,to_del]))
+        to_del.sort(reverse=False)
+        unsel = np.delete(unsel,to_del,1)
+        # self.disconnect_events()
+        Plot.plot.unselected_points = unsel
+        Plot.plot.selected_points = sel
         Plot.plot.redraw()
                 
     @staticmethod
     def clear_selection(event):
         """event is unused"""
         plot = Plot.plot
-        selected = plot.selected_points
-        unselected = plot.unselected_points
-        for iter in range(len(plot.selected_points[0])):
-            unselected[0].append(selected[0][iter])
-            unselected[1].append(selected[1][iter])
-        plot.selected_points = [[], []]
+        plot.unselected_points = np.hstack((plot.unselected_points, plot.selected_points))
+        plot.selected_points = np.array([[],[]])
         plot.redraw()
         
     @staticmethod
@@ -198,5 +199,5 @@ class SelectHandler(RectangleSelector):
             return
         # making preperations for updating text field
         # deleting points
-        plot.selected_points = [[], []]
+        plot.selected_points = np.array([[],[]])
         plot.redraw()
